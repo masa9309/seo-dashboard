@@ -4,251 +4,170 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SEOダッシュボード | morinotakumi.com</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      font-family: 'Noto Sans JP', sans-serif;
       font-size: 14px;
       color: #1a1a1a;
-      background: #f5f5f5;
-      line-height: 1.5;
+      background: #f0f2f5;
+      line-height: 1.6;
     }
 
     /* ── ヘッダー ── */
     .header {
-      background: #fff;
-      border-bottom: 2px solid #e0e0e0;
-      padding: 16px 24px;
+      background: #1e3a5f;
+      padding: 20px 32px;
       display: flex;
-      align-items: baseline;
+      align-items: center;
       gap: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     }
-    .header h1 {
-      font-size: 18px;
-      font-weight: 700;
-      color: #1a1a1a;
+    .header-logo { font-size: 20px; font-weight: 700; color: #fff; letter-spacing: 0.5px; }
+    .header-site {
+      font-size: 13px; color: #90b8d8;
+      background: rgba(255,255,255,0.1); padding: 3px 10px; border-radius: 12px;
     }
-    .header .site-url {
-      font-size: 13px;
-      color: #666;
-    }
-    .header .fetched-at {
-      margin-left: auto;
-      font-size: 12px;
-      color: #999;
-    }
+    .header-updated { margin-left: auto; font-size: 12px; color: #90b8d8; }
 
     /* ── サマリーカード ── */
     .summary-bar {
-      background: #fff;
-      border-bottom: 1px solid #e0e0e0;
-      padding: 16px 24px;
-      display: flex;
-      gap: 32px;
+      background: #fff; border-bottom: 1px solid #e0e0e0;
+      padding: 20px 32px; display: flex; gap: 20px; flex-wrap: wrap;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     }
     .summary-card {
-      text-align: center;
+      background: #f8faff; border: 1px solid #d0e4f7; border-radius: 10px;
+      padding: 14px 22px; text-align: center; min-width: 130px;
     }
-    .summary-card .label {
-      font-size: 11px;
-      color: #888;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .summary-card .value {
-      font-size: 28px;
-      font-weight: 700;
-      color: #1a1a1a;
-      line-height: 1.2;
-    }
-    .summary-card .sub {
-      font-size: 11px;
-      color: #aaa;
-    }
+    .summary-card .s-label { font-size: 11px; color: #6b8cad; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; }
+    .summary-card .s-value { font-size: 26px; font-weight: 700; color: #1e3a5f; line-height: 1.2; margin: 4px 0 2px; }
+    .summary-card .s-sub   { font-size: 11px; color: #aaa; }
 
     /* ── タブ ── */
-    .tabs {
-      background: #fff;
-      border-bottom: 1px solid #e0e0e0;
-      padding: 0 24px;
-      display: flex;
-      gap: 0;
+    .tabs-wrap {
+      background: #fff; border-bottom: 2px solid #e0e0e0;
+      padding: 0 32px; display: flex; gap: 2px; overflow-x: auto;
     }
     .tab-btn {
-      padding: 12px 20px;
-      border: none;
-      background: transparent;
-      font-size: 13px;
-      font-weight: 500;
-      color: #666;
-      cursor: pointer;
-      border-bottom: 3px solid transparent;
-      margin-bottom: -1px;
-      transition: color 0.15s, border-color 0.15s;
+      padding: 13px 16px; border: none; background: transparent;
+      font-family: 'Noto Sans JP', sans-serif; font-size: 13px; font-weight: 500;
+      color: #666; cursor: pointer; border-bottom: 3px solid transparent;
+      margin-bottom: -2px; white-space: nowrap; transition: all 0.15s;
+      border-radius: 4px 4px 0 0;
     }
-    .tab-btn:hover { color: #333; }
-    .tab-btn.active {
-      color: #0066cc;
-      border-bottom-color: #0066cc;
-    }
+    .tab-btn:hover { background: #f5f7fa; color: #1e3a5f; }
+    .tab-btn.active { background: #1e3a5f; color: #fff; border-bottom-color: #1e3a5f; }
 
     /* ── コンテンツ ── */
-    .content {
-      padding: 24px;
-      max-width: 1200px;
-    }
+    .content { padding: 28px 32px; max-width: 1400px; }
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
 
-    /* ── セクションタイトル ── */
-    .section-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: #555;
-      margin-bottom: 12px;
-    }
-    .period-note {
-      font-size: 12px;
-      color: #999;
-      margin-bottom: 12px;
+    /* ── ノート ── */
+    .period-note { font-size: 12px; color: #888; margin-bottom: 12px; }
+    .tip-note {
+      font-size: 12px; color: #7a4f00; background: #fff8e1;
+      border-left: 4px solid #f9a825; padding: 8px 14px;
+      border-radius: 0 6px 6px 0; margin-bottom: 14px;
     }
 
-    /* ── テーブル共通 ── */
-    .data-table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #fff;
-      border: 1px solid #e0e0e0;
-      border-radius: 6px;
-      overflow: hidden;
-    }
+    /* ── テーブル ── */
+    .tbl-wrap { overflow-x: auto; border-radius: 8px; box-shadow: 0 1px 6px rgba(0,0,0,0.09); }
+    .scroll-wrap { max-height: 520px; overflow-y: auto; }
+
+    .data-table { width: 100%; border-collapse: collapse; background: #fff; }
     .data-table thead th {
-      background: #f8f8f8;
-      padding: 10px 14px;
-      text-align: left;
-      font-size: 12px;
-      font-weight: 600;
-      color: #555;
-      border-bottom: 1px solid #e0e0e0;
-      white-space: nowrap;
+      background: #1e3a5f; color: #fff; padding: 11px 14px;
+      text-align: left; font-size: 12px; font-weight: 700;
+      white-space: nowrap; letter-spacing: 0.3px; position: sticky; top: 0; z-index: 1;
     }
     .data-table thead th.num { text-align: right; }
-    .data-table tbody tr:hover { background: #fafafa; }
+    .data-table tbody tr:nth-child(even) { background: #f0f7ff; }
+    .data-table tbody tr:hover { background: #fffbe6 !important; }
     .data-table tbody td {
-      padding: 8px 14px;
-      border-bottom: 1px solid #f0f0f0;
-      font-size: 13px;
-      color: #1a1a1a;
+      padding: 9px 14px; border-bottom: 1px solid #e8eef5; font-size: 13px; color: #1a1a1a;
     }
     .data-table tbody tr:last-child td { border-bottom: none; }
-    .data-table tbody td.num {
-      text-align: right;
-      font-variant-numeric: tabular-nums;
-      color: #333;
-    }
-    .data-table tbody td.rank {
-      text-align: right;
-      font-variant-numeric: tabular-nums;
-    }
-    .rank-good  { color: #2e7d32; font-weight: 600; }
-    .rank-mid   { color: #f57c00; font-weight: 600; }
-    .rank-low   { color: #999; }
+    .data-table tbody td.num { text-align: right; font-variant-numeric: tabular-nums; }
 
-    /* ── デイリーテーブル ── */
-    .daily-wrap {
-      max-height: 480px;
-      overflow-y: auto;
-      border: 1px solid #e0e0e0;
-      border-radius: 6px;
+    /* ── バッジ：順位 ── */
+    .rank-badge {
+      display: inline-block; padding: 2px 9px; border-radius: 10px;
+      font-size: 12px; font-weight: 700; min-width: 44px; text-align: center;
     }
-    .daily-wrap .data-table { border: none; }
+    .rank-gold   { background: #fff3cd; color: #856404; border: 1px solid #ffc107; }
+    .rank-green  { background: #d4edda; color: #155724; border: 1px solid #28a745; }
+    .rank-yellow { background: #fff8d6; color: #856404; border: 1px solid #ffc107; }
+    .rank-gray   { background: #f0f0f0; color: #666;    border: 1px solid #ccc; }
 
-    /* ── URL列 ── */
-    .url-cell {
-      max-width: 420px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .url-cell a {
-      color: #0066cc;
-      text-decoration: none;
-    }
-    .url-cell a:hover { text-decoration: underline; }
+    /* ── バッジ：CTR ── */
+    .ctr-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 12px; font-weight: 700; }
+    .ctr-high { background: #d4edda; color: #155724; }
+    .ctr-mid  { background: #fff8d6; color: #856404; }
+    .ctr-low  { background: #f8d7da; color: #721c24; }
 
-    /* ── エラー表示 ── */
-    .error-box {
-      background: #fff3f3;
-      border: 1px solid #ffcccc;
-      border-radius: 6px;
-      padding: 16px;
-      color: #c00;
-      font-size: 13px;
-    }
+    /* ── バッジ：インデックス ── */
+    .badge { display: inline-block; padding: 2px 9px; border-radius: 10px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+    .badge-ok      { background: #d4edda; color: #155724; }
+    .badge-warn    { background: #fff8d6; color: #856404; }
+    .badge-err     { background: #f8d7da; color: #721c24; }
+    .badge-unknown { background: #f0f0f0; color: #888; }
 
-    /* ── ローディング ── */
-    #loading {
-      padding: 60px 24px;
-      text-align: center;
-      color: #888;
-      font-size: 15px;
+    /* ── カニバリ行 ── */
+    .cannibal-row-highlight td { background: #fff0f0 !important; }
+    .cannibal-row-highlight:hover td { background: #fffbe6 !important; }
+    .cannibal-pages { display: none; }
+    .cannibal-page-item {
+      display: flex; gap: 12px; padding: 5px 14px 5px 28px;
+      font-size: 12px; color: #555; border-top: 1px solid #f0e0e0; background: #fff8f8;
     }
-    #dashboard { display: none; }
-
-    /* ── ランク色バー ── */
-    .bar-wrap {
-      display: inline-block;
-      width: 60px;
-      height: 6px;
-      background: #e0e0e0;
-      border-radius: 3px;
-      vertical-align: middle;
-      margin-left: 6px;
-    }
-    .bar-fill {
-      height: 100%;
-      border-radius: 3px;
-      background: #0066cc;
-    }
-
-    /* ── インデックス状態バッジ ── */
-    .badge {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 10px;
-      font-size: 11px;
-      font-weight: 600;
-      white-space: nowrap;
-    }
-    .badge-ok   { background: #e8f5e9; color: #2e7d32; }
-    .badge-warn { background: #fff8e1; color: #f57c00; }
-    .badge-err  { background: #fce4ec; color: #c62828; }
-    .badge-unknown { background: #f5f5f5; color: #888; }
-
-    /* ── カニバリ詳細行 ── */
-    .cannibal-pages { padding: 0; }
-    .cannibal-page-row {
-      display: flex;
-      gap: 12px;
-      padding: 4px 14px 4px 28px;
-      font-size: 12px;
-      color: #555;
-      border-top: 1px solid #f0f0f0;
-    }
-    .cannibal-page-row .cp-path { flex: 1; color: #0066cc; }
-    .cannibal-page-row .cp-num  { min-width: 60px; text-align: right; font-variant-numeric: tabular-nums; }
+    .cannibal-page-item .cp-path { flex: 1; }
+    .cannibal-page-item .cp-path a { color: #0066cc; text-decoration: none; }
+    .cannibal-page-item .cp-path a:hover { text-decoration: underline; }
+    .cannibal-page-item .cp-num { min-width: 90px; text-align: right; font-variant-numeric: tabular-nums; }
 
     /* ── 展開ボタン ── */
     .expand-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: #0066cc;
-      font-size: 12px;
-      padding: 0;
+      background: #e8f0fe; border: 1px solid #c5d8f7; border-radius: 4px;
+      cursor: pointer; color: #1e3a5f; font-size: 12px; font-weight: 600;
+      padding: 3px 10px; font-family: 'Noto Sans JP', sans-serif; transition: background 0.15s;
     }
-    .expand-btn:hover { text-decoration: underline; }
+    .expand-btn:hover { background: #c5d8f7; }
+
+    /* ── 内部リンク孤立行 ── */
+    .no-inlink td { background: #fff0f0 !important; }
+    .no-inlink:hover td { background: #fffbe6 !important; }
+
+    /* ── URLセル ── */
+    .url-cell { max-width: 380px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .url-cell a { color: #0066cc; text-decoration: none; }
+    .url-cell a:hover { text-decoration: underline; }
+
+    /* ── ミニバー ── */
+    .mini-bar-wrap {
+      display: inline-block; width: 50px; height: 5px; background: #dce8f5;
+      border-radius: 3px; vertical-align: middle; margin-left: 6px;
+    }
+    .mini-bar-fill { height: 100%; border-radius: 3px; background: #1e3a5f; }
+
+    /* ── エラーボックス ── */
+    .error-box {
+      background: #fff3f3; border: 1px solid #ffcccc;
+      border-radius: 8px; padding: 16px 20px; color: #c00; font-size: 13px;
+    }
+
+    /* ── ローディング ── */
+    #loading { padding: 80px 32px; text-align: center; color: #888; font-size: 16px; }
+    #dashboard { display: none; }
+
+    /* ── フッター ── */
+    .footer {
+      background: #1e3a5f; color: #90b8d8;
+      text-align: center; padding: 14px; font-size: 12px; margin-top: 40px;
+    }
   </style>
 </head>
 <body>
@@ -257,465 +176,263 @@
 
 <div id="dashboard">
   <div class="header">
-    <h1>SEOダッシュボード</h1>
-    <span class="site-url">morinotakumi.com</span>
-    <span class="fetched-at" id="fetched-at"></span>
+    <span class="header-logo">SEOダッシュボード</span>
+    <span class="header-site">morinotakumi.com</span>
+    <span class="header-updated" id="header-updated"></span>
   </div>
 
   <div class="summary-bar" id="summary-bar"></div>
 
-  <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('tab1', this)">① 流入・セッション（GA4）</button>
-    <button class="tab-btn" onclick="switchTab('tab2', this)">② 検索キーワード（SC）</button>
-    <button class="tab-btn" onclick="switchTab('tab3', this)">③ 記事別パフォーマンス（SC）</button>
-    <button class="tab-btn" onclick="switchTab('tab4', this)">④ ページ別・インデックス状態</button>
-    <button class="tab-btn" onclick="switchTab('tab5', this)">⑤ カニバリ検出</button>
-    <button class="tab-btn" onclick="switchTab('tab6', this)">⑥ 2ページ目滞留KW</button>
-    <button class="tab-btn" onclick="switchTab('tab7', this)">⑦ 内部リンク構造</button>
+  <div class="tabs-wrap">
+    <button class="tab-btn active" onclick="switchTab('tab1',this)">① 流入・セッション</button>
+    <button class="tab-btn" onclick="switchTab('tab2',this)">② 検索キーワード</button>
+    <button class="tab-btn" onclick="switchTab('tab3',this)">③ 記事別パフォーマンス</button>
+    <button class="tab-btn" onclick="switchTab('tab4',this)">④ インデックス状態</button>
+    <button class="tab-btn" onclick="switchTab('tab5',this)">⑤ カニバリ検出</button>
+    <button class="tab-btn" onclick="switchTab('tab6',this)">⑥ 2ページ目滞留KW</button>
+    <button class="tab-btn" onclick="switchTab('tab7',this)">⑦ 内部リンク構造</button>
   </div>
 
   <div class="content">
-    <!-- TAB 1 -->
-    <div class="tab-panel active" id="tab1">
-      <div id="tab1-content"></div>
-    </div>
-
-    <!-- TAB 2 -->
-    <div class="tab-panel" id="tab2">
-      <div id="tab2-content"></div>
-    </div>
-
-    <!-- TAB 3 -->
-    <div class="tab-panel" id="tab3">
-      <div id="tab3-content"></div>
-    </div>
-
-    <!-- TAB 4 -->
-    <div class="tab-panel" id="tab4">
-      <div id="tab4-content"></div>
-    </div>
-
-    <!-- TAB 5 -->
-    <div class="tab-panel" id="tab5">
-      <div id="tab5-content"></div>
-    </div>
-
-    <!-- TAB 6 -->
-    <div class="tab-panel" id="tab6">
-      <div id="tab6-content"></div>
-    </div>
-
-    <!-- TAB 7 -->
-    <div class="tab-panel" id="tab7">
-      <div id="tab7-content"></div>
-    </div>
+    <div class="tab-panel active" id="tab1"><div id="tab1-content"></div></div>
+    <div class="tab-panel" id="tab2"><div id="tab2-content"></div></div>
+    <div class="tab-panel" id="tab3"><div id="tab3-content"></div></div>
+    <div class="tab-panel" id="tab4"><div id="tab4-content"></div></div>
+    <div class="tab-panel" id="tab5"><div id="tab5-content"></div></div>
+    <div class="tab-panel" id="tab6"><div id="tab6-content"></div></div>
+    <div class="tab-panel" id="tab7"><div id="tab7-content"></div></div>
   </div>
+
+  <div class="footer" id="footer"></div>
 </div>
 
 <script>
-// ─────────────────────────────────────────
-// ユーティリティ
-// ─────────────────────────────────────────
-function fmt(n) {
-  return Number(n).toLocaleString("ja-JP");
-}
-function rankClass(pos) {
-  if (pos <= 10) return "rank-good";
-  if (pos <= 20) return "rank-mid";
-  return "rank-low";
-}
+// ─── ユーティリティ ───────────────────────────────────────
+function fmt(n) { return Number(n).toLocaleString('ja-JP'); }
 
-// ─────────────────────────────────────────
-// タブ切替
-// ─────────────────────────────────────────
-function switchTab(id, btn) {
-  document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
-  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  btn.classList.add("active");
-}
-
-// ─────────────────────────────────────────
-// サマリーカード
-// ─────────────────────────────────────────
-function renderSummary(ga4) {
-  const s = ga4.summary || {};
-  const bar = document.getElementById("summary-bar");
-  bar.innerHTML = `
-    <div class="summary-card">
-      <div class="label">セッション</div>
-      <div class="value">${fmt(s.sessions || 0)}</div>
-      <div class="sub">過去28日間</div>
-    </div>
-    <div class="summary-card">
-      <div class="label">ユーザー</div>
-      <div class="value">${fmt(s.users || 0)}</div>
-      <div class="sub">過去28日間</div>
-    </div>
-    <div class="summary-card">
-      <div class="label">ページビュー</div>
-      <div class="value">${fmt(s.pv || 0)}</div>
-      <div class="sub">過去28日間</div>
-    </div>
-  `;
-}
-
-// ─────────────────────────────────────────
-// タブ① GA4 デイリー
-// ─────────────────────────────────────────
-function renderTab1(ga4) {
-  const el = document.getElementById("tab1-content");
-  if (ga4.error) {
-    el.innerHTML = `<div class="error-box">⚠️ GA4 取得エラー：${ga4.error}</div>`;
-    return;
-  }
-  const rows = (ga4.daily || []).slice().reverse();
-  const maxPv = Math.max(...rows.map(r => r.pv), 1);
-
-  let html = `
-    <p class="period-note">期間：過去28日間 ／ 日付の新しい順</p>
-    <div class="daily-wrap">
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>日付</th>
-          <th class="num">セッション</th>
-          <th class="num">ユーザー</th>
-          <th class="num">ページビュー</th>
-        </tr>
-      </thead>
-      <tbody>
-  `;
-  rows.forEach(r => {
-    const barW = Math.round((r.pv / maxPv) * 60);
-    html += `
-      <tr>
-        <td>${r.date}</td>
-        <td class="num">${fmt(r.sessions)}</td>
-        <td class="num">${fmt(r.users)}</td>
-        <td class="num">
-          ${fmt(r.pv)}
-          <span class="bar-wrap"><span class="bar-fill" style="width:${barW}px"></span></span>
-        </td>
-      </tr>
-    `;
-  });
-  html += `</tbody></table></div>`;
-  el.innerHTML = html;
-}
-
-// ─────────────────────────────────────────
-// タブ② SC キーワード
-// ─────────────────────────────────────────
-function renderTab2(sc) {
-  const el = document.getElementById("tab2-content");
-  if (sc.error) {
-    el.innerHTML = `<div class="error-box">⚠️ Search Console 取得エラー：${sc.error}</div>`;
-    return;
-  }
-  let html = `
-    <p class="period-note">期間：${sc.period} ／ クリック数降順・上位50件</p>
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>キーワード</th>
-          <th class="num">クリック</th>
-          <th class="num">表示回数</th>
-          <th class="num">CTR</th>
-          <th class="num">平均順位</th>
-        </tr>
-      </thead>
-      <tbody>
-  `;
-  sc.rows.forEach((r, i) => {
-    html += `
-      <tr>
-        <td class="num" style="color:#aaa">${i + 1}</td>
-        <td>${escHtml(r.keyword)}</td>
-        <td class="num">${fmt(r.clicks)}</td>
-        <td class="num">${fmt(r.impressions)}</td>
-        <td class="num">${r.ctr}%</td>
-        <td class="num rank ${rankClass(r.position)}">${r.position}</td>
-      </tr>
-    `;
-  });
-  html += `</tbody></table>`;
-  el.innerHTML = html;
-}
-
-// ─────────────────────────────────────────
-// タブ③ SC ページ別
-// ─────────────────────────────────────────
-function renderTab3(sc) {
-  const el = document.getElementById("tab3-content");
-  if (sc.error) {
-    el.innerHTML = `<div class="error-box">⚠️ Search Console 取得エラー：${sc.error}</div>`;
-    return;
-  }
-  let html = `
-    <p class="period-note">期間：${sc.period} ／ クリック数降順・上位50件</p>
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>URL</th>
-          <th class="num">クリック</th>
-          <th class="num">表示回数</th>
-          <th class="num">CTR</th>
-          <th class="num">平均順位</th>
-        </tr>
-      </thead>
-      <tbody>
-  `;
-  sc.rows.forEach((r, i) => {
-    html += `
-      <tr>
-        <td class="num" style="color:#aaa">${i + 1}</td>
-        <td class="url-cell"><a href="${escHtml(r.url)}" target="_blank">${escHtml(r.path)}</a></td>
-        <td class="num">${fmt(r.clicks)}</td>
-        <td class="num">${fmt(r.impressions)}</td>
-        <td class="num">${r.ctr}%</td>
-        <td class="num rank ${rankClass(r.position)}">${r.position}</td>
-      </tr>
-    `;
-  });
-  html += `</tbody></table>`;
-  el.innerHTML = html;
-}
-
-// ─────────────────────────────────────────
-// XSS対策
-// ─────────────────────────────────────────
 function escHtml(s) {
   return String(s)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// ─────────────────────────────────────────
-// タブ④ ページ別詳細（インデックス状態付き）
-// ─────────────────────────────────────────
-function renderTab4(sc) {
-  const el = document.getElementById("tab4-content");
-  if (sc.error) {
-    el.innerHTML = `<div class="error-box">⚠️ エラー：${sc.error}</div>`;
-    return;
+function rankBadge(pos) {
+  const p = parseFloat(pos);
+  if (p <= 3)  return `<span class="rank-badge rank-gold">${pos}</span>`;
+  if (p <= 10) return `<span class="rank-badge rank-green">${pos}</span>`;
+  if (p <= 20) return `<span class="rank-badge rank-yellow">${pos}</span>`;
+  return `<span class="rank-badge rank-gray">${pos}</span>`;
+}
+
+function ctrBadge(ctr) {
+  const cls = ctr >= 5 ? 'ctr-high' : ctr >= 2 ? 'ctr-mid' : 'ctr-low';
+  return `<span class="ctr-badge ${cls}">${ctr}%</span>`;
+}
+
+function indexBadge(state) {
+  if (!state || state === '不明' || state.includes('権限') || state.includes('エラー')) {
+    return `<span class="badge badge-unknown">${escHtml(state||'不明')}</span>`;
   }
-  function indexBadge(state) {
-    if (!state || state === "不明" || state === "取得エラー") {
-      return `<span class="badge badge-unknown">${escHtml(state || "不明")}</span>`;
-    }
-    const s = state.toLowerCase();
-    if (s.includes("indexed") || s.includes("submitted and indexed")) {
-      return `<span class="badge badge-ok">${escHtml(state)}</span>`;
-    }
-    if (s.includes("not indexed") || s.includes("excluded") || s.includes("redirect")) {
-      return `<span class="badge badge-err">${escHtml(state)}</span>`;
-    }
-    return `<span class="badge badge-warn">${escHtml(state)}</span>`;
-  }
-  let html = `
-    <p class="period-note">期間：${sc.period} ／ クリック数降順・上位50件</p>
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>#</th><th>URL</th>
-          <th class="num">クリック</th><th class="num">表示回数</th>
-          <th class="num">CTR</th><th class="num">平均順位</th>
-          <th>インデックス状態</th>
-        </tr>
-      </thead><tbody>
+  const s = state.toLowerCase();
+  if (s.includes('indexed') && !s.includes('not')) return `<span class="badge badge-ok">${escHtml(state)}</span>`;
+  if (s.includes('not indexed') || s.includes('excluded') || s.includes('redirect')) return `<span class="badge badge-err">${escHtml(state)}</span>`;
+  return `<span class="badge badge-warn">${escHtml(state)}</span>`;
+}
+
+// ─── タブ切替 ─────────────────────────────────────────────
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ─── サマリー ─────────────────────────────────────────────
+function renderSummary(ga4, scKw, scPages) {
+  const s = ga4.summary || {};
+  const totalClicks = (scKw.rows||[]).reduce((a,r) => a+r.clicks, 0);
+  const totalImpr   = (scKw.rows||[]).reduce((a,r) => a+r.impressions, 0);
+  document.getElementById('summary-bar').innerHTML = `
+    <div class="summary-card"><div class="s-label">セッション</div><div class="s-value">${fmt(s.sessions||0)}</div><div class="s-sub">過去28日間</div></div>
+    <div class="summary-card"><div class="s-label">ユーザー</div><div class="s-value">${fmt(s.users||0)}</div><div class="s-sub">過去28日間</div></div>
+    <div class="summary-card"><div class="s-label">ページビュー</div><div class="s-value">${fmt(s.pv||0)}</div><div class="s-sub">過去28日間</div></div>
+    <div class="summary-card"><div class="s-label">総クリック数</div><div class="s-value">${fmt(totalClicks)}</div><div class="s-sub">SC 過去28日間</div></div>
+    <div class="summary-card"><div class="s-label">総表示回数</div><div class="s-value">${fmt(totalImpr)}</div><div class="s-sub">SC 過去28日間</div></div>
+    <div class="summary-card"><div class="s-label">計測ページ数</div><div class="s-value">${(scPages.rows||[]).length}</div><div class="s-sub">SC 上位件数</div></div>
   `;
-  sc.rows.forEach((r, i) => {
-    html += `
-      <tr>
-        <td class="num" style="color:#aaa">${i + 1}</td>
-        <td class="url-cell"><a href="${escHtml(r.url)}" target="_blank">${escHtml(r.path)}</a></td>
-        <td class="num">${fmt(r.clicks)}</td>
-        <td class="num">${fmt(r.impressions)}</td>
-        <td class="num">${r.ctr}%</td>
-        <td class="num rank ${rankClass(r.position)}">${r.position}</td>
-        <td>${indexBadge(r.index_state)}</td>
-      </tr>`;
+}
+
+// ─── タブ① GA4 ───────────────────────────────────────────
+function renderTab1(ga4) {
+  const el = document.getElementById('tab1-content');
+  if (ga4.error) { el.innerHTML = `<div class="error-box">⚠️ ${ga4.error}</div>`; return; }
+  const rows = (ga4.daily||[]).slice().reverse();
+  const maxPv = Math.max(...rows.map(r=>r.pv), 1);
+  let h = `<p class="period-note">期間：過去28日間 ／ 日付の新しい順</p>
+  <div class="tbl-wrap"><div class="scroll-wrap"><table class="data-table">
+  <thead><tr><th>日付</th><th class="num">セッション</th><th class="num">ユーザー</th><th class="num">ページビュー</th></tr></thead><tbody>`;
+  rows.forEach(r => {
+    const w = Math.round((r.pv/maxPv)*50);
+    h += `<tr><td>${r.date}</td><td class="num">${fmt(r.sessions)}</td><td class="num">${fmt(r.users)}</td>
+      <td class="num">${fmt(r.pv)}<span class="mini-bar-wrap"><span class="mini-bar-fill" style="width:${w}px"></span></span></td></tr>`;
   });
-  html += `</tbody></table>`;
-  el.innerHTML = html;
+  el.innerHTML = h + `</tbody></table></div></div>`;
 }
 
-// ─────────────────────────────────────────
-// タブ⑤ カニバリ検出
-// ─────────────────────────────────────────
+// ─── タブ② SC キーワード ─────────────────────────────────
+function renderTab2(sc) {
+  const el = document.getElementById('tab2-content');
+  if (sc.error) { el.innerHTML = `<div class="error-box">⚠️ ${sc.error}</div>`; return; }
+  let h = `<p class="period-note">期間：${sc.period} ／ クリック数降順・上位50件</p>
+  <div class="tbl-wrap"><table class="data-table">
+  <thead><tr><th>#</th><th>キーワード</th><th class="num">クリック</th><th class="num">表示回数</th><th class="num">CTR</th><th class="num">平均順位</th></tr></thead><tbody>`;
+  sc.rows.forEach((r,i) => {
+    h += `<tr><td class="num" style="color:#aaa">${i+1}</td><td>${escHtml(r.keyword)}</td>
+      <td class="num">${fmt(r.clicks)}</td><td class="num">${fmt(r.impressions)}</td>
+      <td class="num">${ctrBadge(r.ctr)}</td><td class="num">${rankBadge(r.position)}</td></tr>`;
+  });
+  el.innerHTML = h + `</tbody></table></div>`;
+}
+
+// ─── タブ③ SC ページ別 ───────────────────────────────────
+function renderTab3(sc) {
+  const el = document.getElementById('tab3-content');
+  if (sc.error) { el.innerHTML = `<div class="error-box">⚠️ ${sc.error}</div>`; return; }
+  let h = `<p class="period-note">期間：${sc.period} ／ クリック数降順・上位50件</p>
+  <div class="tbl-wrap"><table class="data-table">
+  <thead><tr><th>#</th><th>URL</th><th class="num">クリック</th><th class="num">表示回数</th><th class="num">CTR</th><th class="num">平均順位</th></tr></thead><tbody>`;
+  sc.rows.forEach((r,i) => {
+    h += `<tr><td class="num" style="color:#aaa">${i+1}</td>
+      <td class="url-cell"><a href="${escHtml(r.url)}" target="_blank">${escHtml(r.path)}</a></td>
+      <td class="num">${fmt(r.clicks)}</td><td class="num">${fmt(r.impressions)}</td>
+      <td class="num">${ctrBadge(r.ctr)}</td><td class="num">${rankBadge(r.position)}</td></tr>`;
+  });
+  el.innerHTML = h + `</tbody></table></div>`;
+}
+
+// ─── タブ④ インデックス状態 ──────────────────────────────
+function renderTab4(sc) {
+  const el = document.getElementById('tab4-content');
+  if (sc.error) { el.innerHTML = `<div class="error-box">⚠️ ${sc.error}</div>`; return; }
+  let h = `<p class="period-note">期間：${sc.period} ／ クリック数降順・上位50件</p>
+  <div class="tbl-wrap"><table class="data-table">
+  <thead><tr><th>#</th><th>URL</th><th class="num">クリック</th><th class="num">表示回数</th><th class="num">CTR</th><th class="num">平均順位</th><th>インデックス状態</th></tr></thead><tbody>`;
+  sc.rows.forEach((r,i) => {
+    h += `<tr><td class="num" style="color:#aaa">${i+1}</td>
+      <td class="url-cell"><a href="${escHtml(r.url)}" target="_blank">${escHtml(r.path)}</a></td>
+      <td class="num">${fmt(r.clicks)}</td><td class="num">${fmt(r.impressions)}</td>
+      <td class="num">${ctrBadge(r.ctr)}</td><td class="num">${rankBadge(r.position)}</td>
+      <td>${indexBadge(r.index_state)}</td></tr>`;
+  });
+  el.innerHTML = h + `</tbody></table></div>`;
+}
+
+// ─── タブ⑤ カニバリ ──────────────────────────────────────
 function renderTab5(data) {
-  const el = document.getElementById("tab5-content");
-  if (data.error) {
-    el.innerHTML = `<div class="error-box">⚠️ エラー：${data.error}</div>`;
-    return;
-  }
-  if (data.rows.length === 0) {
-    el.innerHTML = `<p class="period-note">カニバリゼーションは検出されませんでした。</p>`;
-    return;
-  }
-  let html = `
-    <p class="period-note">期間：${data.period} ／ 同一KWで複数URLがランクイン（表示回数降順）／ 全${data.rows.length}件</p>
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>#</th><th>キーワード</th>
-          <th class="num">競合URL数</th>
-          <th class="num">合計クリック</th>
-          <th class="num">合計表示回数</th>
-          <th>競合URL詳細</th>
-        </tr>
-      </thead><tbody>
-  `;
-  data.rows.forEach((r, i) => {
-    const rowId = `cannibal-${i}`;
-    const pagesHtml = r.pages.map(p =>
-      `<div class="cannibal-page-row">
+  const el = document.getElementById('tab5-content');
+  if (data.error) { el.innerHTML = `<div class="error-box">⚠️ ${data.error}</div>`; return; }
+  if (!data.rows || data.rows.length === 0) { el.innerHTML = `<p class="period-note">カニバリゼーションは検出されませんでした。</p>`; return; }
+  let h = `<p class="period-note">期間：${data.period} ／ 同一KWで複数URLランクイン（表示回数降順）／ 全${data.rows.length}件</p>
+  <div class="tbl-wrap"><table class="data-table">
+  <thead><tr><th>#</th><th>キーワード</th><th class="num">競合URL数</th><th class="num">合計クリック</th><th class="num">合計表示回数</th><th>詳細</th></tr></thead><tbody>`;
+  data.rows.forEach((r,i) => {
+    const rowId = `cv-${i}`;
+    const pHtml = r.pages.map(p => `
+      <div class="cannibal-page-item">
         <span class="cp-path"><a href="${escHtml(p.url)}" target="_blank">${escHtml(p.path)}</a></span>
-        <span class="cp-num">順位 ${p.position}</span>
+        <span class="cp-num">順位 ${rankBadge(p.position)}</span>
         <span class="cp-num">クリック ${fmt(p.clicks)}</span>
         <span class="cp-num">表示 ${fmt(p.impressions)}</span>
-       </div>`
-    ).join("");
-    html += `
-      <tr>
-        <td class="num" style="color:#aaa">${i + 1}</td>
-        <td>${escHtml(r.keyword)}</td>
-        <td class="num" style="color:#c62828;font-weight:700">${r.page_count}</td>
-        <td class="num">${fmt(r.total_clicks)}</td>
-        <td class="num">${fmt(r.total_impressions)}</td>
-        <td>
-          <button class="expand-btn" onclick="toggleDetail('${rowId}')">▶ 詳細を表示</button>
-          <div id="${rowId}" class="cannibal-pages" style="display:none">${pagesHtml}</div>
-        </td>
-      </tr>`;
+      </div>`).join('');
+    h += `<tr class="cannibal-row-highlight">
+      <td class="num" style="color:#aaa">${i+1}</td>
+      <td><strong>${escHtml(r.keyword)}</strong></td>
+      <td class="num" style="color:#c0392b;font-weight:700;font-size:16px">${r.page_count}</td>
+      <td class="num">${fmt(r.total_clicks)}</td>
+      <td class="num">${fmt(r.total_impressions)}</td>
+      <td><button class="expand-btn" onclick="toggleDetail('${rowId}',this)">▶ 展開</button>
+        <div id="${rowId}" class="cannibal-pages">${pHtml}</div></td>
+    </tr>`;
   });
-  html += `</tbody></table>`;
-  el.innerHTML = html;
+  el.innerHTML = h + `</tbody></table></div>`;
 }
 
-function toggleDetail(id) {
+function toggleDetail(id, btn) {
   const el = document.getElementById(id);
-  const btn = el.previousElementSibling;
-  if (el.style.display === "none") {
-    el.style.display = "block";
-    btn.textContent = "▼ 閉じる";
+  if (el.style.display === 'none' || !el.style.display) {
+    el.style.display = 'block'; btn.textContent = '▼ 閉じる';
   } else {
-    el.style.display = "none";
-    btn.textContent = "▶ 詳細を表示";
+    el.style.display = 'none'; btn.textContent = '▶ 展開';
   }
 }
 
-// ─────────────────────────────────────────
-// タブ⑥ 2ページ目滞留KW
-// ─────────────────────────────────────────
+// ─── タブ⑥ 2ページ目 ─────────────────────────────────────
 function renderTab6(data) {
-  const el = document.getElementById("tab6-content");
-  if (data.error) {
-    el.innerHTML = `<div class="error-box">⚠️ エラー：${data.error}</div>`;
-    return;
-  }
-  let html = `
-    <p class="period-note">期間：${data.period} ／ 順位11〜20位（表示回数降順）／ ${data.rows.length}件</p>
-    <p class="period-note" style="color:#f57c00">💡 これらのキーワードは内部リンク強化・コンテンツ改善で1ページ目に上がりやすいです</p>
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>#</th><th>キーワード</th><th>URL</th>
-          <th class="num">クリック</th><th class="num">表示回数</th>
-          <th class="num">CTR</th><th class="num">現在順位</th>
-        </tr>
-      </thead><tbody>
-  `;
-  data.rows.forEach((r, i) => {
-    html += `
-      <tr>
-        <td class="num" style="color:#aaa">${i + 1}</td>
-        <td>${escHtml(r.keyword)}</td>
-        <td class="url-cell"><a href="${escHtml(r.url)}" target="_blank">${escHtml(r.path)}</a></td>
-        <td class="num">${fmt(r.clicks)}</td>
-        <td class="num">${fmt(r.impressions)}</td>
-        <td class="num">${r.ctr}%</td>
-        <td class="num rank rank-mid">${r.position}</td>
-      </tr>`;
+  const el = document.getElementById('tab6-content');
+  if (data.error) { el.innerHTML = `<div class="error-box">⚠️ ${data.error}</div>`; return; }
+  let h = `<p class="period-note">期間：${data.period} ／ 順位11〜20位（表示回数降順）／ ${data.rows.length}件</p>
+  <div class="tip-note">💡 これらのKWは内部リンク強化・コンテンツ改善で1ページ目に引き上げやすい「準1位候補」です</div>
+  <div class="tbl-wrap"><table class="data-table">
+  <thead><tr><th>#</th><th>キーワード</th><th>URL</th><th class="num">クリック</th><th class="num">表示回数</th><th class="num">CTR</th><th class="num">現在順位</th></tr></thead><tbody>`;
+  data.rows.forEach((r,i) => {
+    h += `<tr><td class="num" style="color:#aaa">${i+1}</td>
+      <td>${escHtml(r.keyword)}</td>
+      <td class="url-cell"><a href="${escHtml(r.url)}" target="_blank">${escHtml(r.path)}</a></td>
+      <td class="num">${fmt(r.clicks)}</td><td class="num">${fmt(r.impressions)}</td>
+      <td class="num">${ctrBadge(r.ctr)}</td><td class="num">${rankBadge(r.position)}</td></tr>`;
   });
-  html += `</tbody></table>`;
-  el.innerHTML = html;
+  el.innerHTML = h + `</tbody></table></div>`;
 }
 
-// ─────────────────────────────────────────
-// タブ⑦ 内部リンク構造
-// ─────────────────────────────────────────
+// ─── タブ⑦ 内部リンク ────────────────────────────────────
 function renderTab7(data) {
-  const el = document.getElementById("tab7-content");
-  if (data.error) {
-    el.innerHTML = `<div class="error-box">⚠️ エラー：${data.error}</div>`;
-    return;
-  }
-  const maxOut = Math.max(...data.rows.map(r => r.outgoing), 1);
-  let html = `
-    <p class="period-note">クロール対象：${data.crawled_pages} ページ ／ 内部被リンク数降順</p>
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>#</th><th>URL</th>
-          <th class="num">内部被リンク数</th>
-          <th class="num">発リンク数</th>
-        </tr>
-      </thead><tbody>
-  `;
-  data.rows.forEach((r, i) => {
-    const barW = Math.round((r.outgoing / maxOut) * 50);
-    html += `
-      <tr>
-        <td class="num" style="color:#aaa">${i + 1}</td>
-        <td class="url-cell"><a href="${escHtml(r.url)}" target="_blank">${escHtml(r.path)}</a></td>
-        <td class="num" style="font-weight:${r.incoming > 5 ? 700 : 400};color:${r.incoming > 5 ? '#0066cc' : '#333'}">${r.incoming}</td>
-        <td class="num">
-          ${r.outgoing}
-          <span class="bar-wrap"><span class="bar-fill" style="width:${barW}px"></span></span>
-        </td>
-      </tr>`;
+  const el = document.getElementById('tab7-content');
+  if (data.error) { el.innerHTML = `<div class="error-box">⚠️ ${data.error}</div>`; return; }
+  const maxOut = Math.max(...data.rows.map(r=>r.outgoing), 1);
+  let h = `<p class="period-note">クロール対象：${data.crawled_pages}ページ ／ 内部被リンク数降順</p>
+  <div class="tip-note">🔴 赤ハイライト行 = 内部被リンク数が0（他ページからリンクされていない孤立ページ）</div>
+  <div class="tbl-wrap"><table class="data-table">
+  <thead><tr><th>#</th><th>URL</th><th class="num">内部被リンク数</th><th class="num">発リンク数</th></tr></thead><tbody>`;
+  data.rows.forEach((r,i) => {
+    const w   = Math.round((r.outgoing/maxOut)*50);
+    const cls = r.incoming === 0 ? ' class="no-inlink"' : '';
+    const inColor = r.incoming === 0 ? '#c0392b' : r.incoming > 5 ? '#155724' : '#333';
+    const inWeight = r.incoming > 5 ? 700 : 400;
+    h += `<tr${cls}><td class="num" style="color:#aaa">${i+1}</td>
+      <td class="url-cell"><a href="${escHtml(r.url)}" target="_blank">${escHtml(r.path)}</a></td>
+      <td class="num" style="font-weight:${inWeight};color:${inColor}">${r.incoming}</td>
+      <td class="num">${r.outgoing}<span class="mini-bar-wrap"><span class="mini-bar-fill" style="width:${w}px"></span></span></td></tr>`;
   });
-  html += `</tbody></table>`;
-  el.innerHTML = html;
+  el.innerHTML = h + `</tbody></table></div>`;
 }
 
-// ─────────────────────────────────────────
-// 埋め込みデータ（fetch_dashboard_data.py が自動更新）
-// ─────────────────────────────────────────
+// ─── 埋め込みデータ（fetch_dashboard_data.py が自動更新） ─
 const DASHBOARD_DATA = {"ga4": {"summary": {"sessions": 1413, "users": 1367, "pv": 1598}, "daily": [{"date": "2026-02-15", "sessions": 31, "users": 29, "pv": 42}, {"date": "2026-02-16", "sessions": 60, "users": 58, "pv": 85}, {"date": "2026-02-17", "sessions": 47, "users": 44, "pv": 50}, {"date": "2026-02-18", "sessions": 45, "users": 45, "pv": 47}, {"date": "2026-02-19", "sessions": 45, "users": 42, "pv": 57}, {"date": "2026-02-20", "sessions": 50, "users": 50, "pv": 63}, {"date": "2026-02-21", "sessions": 35, "users": 35, "pv": 38}, {"date": "2026-02-22", "sessions": 40, "users": 38, "pv": 45}, {"date": "2026-02-23", "sessions": 36, "users": 34, "pv": 36}, {"date": "2026-02-24", "sessions": 40, "users": 40, "pv": 56}, {"date": "2026-02-25", "sessions": 58, "users": 55, "pv": 58}, {"date": "2026-02-26", "sessions": 46, "users": 45, "pv": 51}, {"date": "2026-02-27", "sessions": 50, "users": 47, "pv": 50}, {"date": "2026-02-28", "sessions": 51, "users": 50, "pv": 51}, {"date": "2026-03-01", "sessions": 67, "users": 66, "pv": 75}, {"date": "2026-03-02", "sessions": 77, "users": 76, "pv": 77}, {"date": "2026-03-03", "sessions": 51, "users": 50, "pv": 62}, {"date": "2026-03-04", "sessions": 47, "users": 44, "pv": 52}, {"date": "2026-03-05", "sessions": 49, "users": 48, "pv": 61}, {"date": "2026-03-06", "sessions": 31, "users": 29, "pv": 41}, {"date": "2026-03-07", "sessions": 91, "users": 86, "pv": 97}, {"date": "2026-03-08", "sessions": 54, "users": 52, "pv": 62}, {"date": "2026-03-09", "sessions": 45, "users": 45, "pv": 45}, {"date": "2026-03-10", "sessions": 77, "users": 74, "pv": 89}, {"date": "2026-03-11", "sessions": 52, "users": 49, "pv": 54}, {"date": "2026-03-12", "sessions": 43, "users": 43, "pv": 45}, {"date": "2026-03-13", "sessions": 36, "users": 36, "pv": 44}, {"date": "2026-03-14", "sessions": 47, "users": 45, "pv": 51}, {"date": "2026-03-15", "sessions": 12, "users": 12, "pv": 14}]}, "sc_keywords": {"period": "2026-02-13 〜 2026-03-12", "rows": [{"keyword": "きんでん 就職難易度", "clicks": 14, "impressions": 270, "ctr": 5.19, "position": 1.6}, {"keyword": "きんでん 年収", "clicks": 12, "impressions": 2061, "ctr": 0.58, "position": 6.5}, {"keyword": "大林組 最悪", "clicks": 8, "impressions": 539, "ctr": 1.48, "position": 3.2}, {"keyword": "前田建設 年収", "clicks": 7, "impressions": 495, "ctr": 1.41, "position": 1.4}, {"keyword": "前田建設工業 年収", "clicks": 7, "impressions": 487, "ctr": 1.44, "position": 1.8}, {"keyword": "五洋建設 ボーナス", "clicks": 6, "impressions": 242, "ctr": 2.48, "position": 12.4}, {"keyword": "住友林業 内定 すごい", "clicks": 6, "impressions": 392, "ctr": 1.53, "position": 2.2}, {"keyword": "住友林業 就職難易度", "clicks": 6, "impressions": 694, "ctr": 0.86, "position": 4.0}, {"keyword": "大 本 組 ゼネコン ランキング", "clicks": 6, "impressions": 114, "ctr": 5.26, "position": 2.9}, {"keyword": "きんでん就職難易度", "clicks": 4, "impressions": 38, "ctr": 10.53, "position": 1}, {"keyword": "清水建設 初任給", "clicks": 4, "impressions": 507, "ctr": 0.79, "position": 6.2}, {"keyword": "清水建設 年収", "clicks": 4, "impressions": 3873, "ctr": 0.1, "position": 6.2}, {"keyword": "きんでん 離職率", "clicks": 3, "impressions": 108, "ctr": 2.78, "position": 1.2}, {"keyword": "インフ ロニア ホールディングス 就職 難易度", "clicks": 3, "impressions": 30, "ctr": 10.0, "position": 1.9}, {"keyword": "インフロニア 年収", "clicks": 3, "impressions": 58, "ctr": 5.17, "position": 2.1}, {"keyword": "住友林業 営業 きつい", "clicks": 3, "impressions": 164, "ctr": 1.83, "position": 6.2}, {"keyword": "前田建設工業 就職難易度", "clicks": 3, "impressions": 84, "ctr": 3.57, "position": 7.5}, {"keyword": "大和ハウス 施工管理 激務", "clicks": 3, "impressions": 45, "ctr": 6.67, "position": 6.9}, {"keyword": "大林組 最終 落ちる", "clicks": 3, "impressions": 22, "ctr": 13.64, "position": 1.9}, {"keyword": "新日本建設 年収", "clicks": 3, "impressions": 267, "ctr": 1.12, "position": 2.6}, {"keyword": "松井建設 就職難易度", "clicks": 3, "impressions": 50, "ctr": 6.0, "position": 4.5}, {"keyword": "清水建設 就職 すごい", "clicks": 3, "impressions": 63, "ctr": 4.76, "position": 1.1}, {"keyword": "清水建設 福利厚生", "clicks": 3, "impressions": 158, "ctr": 1.9, "position": 7.5}, {"keyword": "矢作建設工業 年収", "clicks": 3, "impressions": 260, "ctr": 1.15, "position": 6.2}, {"keyword": "きんでん やばい", "clicks": 2, "impressions": 759, "ctr": 0.26, "position": 2.3}, {"keyword": "きんでん 年収 大卒", "clicks": 2, "impressions": 48, "ctr": 4.17, "position": 2.5}, {"keyword": "きんでん 高卒 難易度", "clicks": 2, "impressions": 27, "ctr": 7.41, "position": 1.2}, {"keyword": "ショーボンド建設 年収", "clicks": 2, "impressions": 153, "ctr": 1.31, "position": 11.9}, {"keyword": "九 電工 年収", "clicks": 2, "impressions": 252, "ctr": 0.79, "position": 6.4}, {"keyword": "九電工 中途採用", "clicks": 2, "impressions": 44, "ctr": 4.55, "position": 8.3}, {"keyword": "前田建設 ボーナス", "clicks": 2, "impressions": 7, "ctr": 28.57, "position": 1}, {"keyword": "前田建設工業 福利厚生", "clicks": 2, "impressions": 30, "ctr": 6.67, "position": 4.5}, {"keyword": "千代田化工建設 年収", "clicks": 2, "impressions": 196, "ctr": 1.02, "position": 20.3}, {"keyword": "大成建設 やばい", "clicks": 2, "impressions": 2892, "ctr": 0.07, "position": 5.5}, {"keyword": "大成建設 初任給", "clicks": 2, "impressions": 669, "ctr": 0.3, "position": 8.0}, {"keyword": "大成建設 就職難易度", "clicks": 2, "impressions": 362, "ctr": 0.55, "position": 3.4}, {"keyword": "大成建設 採用人数", "clicks": 2, "impressions": 38, "ctr": 5.26, "position": 5.1}, {"keyword": "大林組 就職難易度", "clicks": 2, "impressions": 195, "ctr": 1.03, "position": 2.8}, {"keyword": "大林組 採用大学", "clicks": 2, "impressions": 196, "ctr": 1.02, "position": 2.5}, {"keyword": "大林組 退職金", "clicks": 2, "impressions": 128, "ctr": 1.56, "position": 3.2}, {"keyword": "大林組 離職率", "clicks": 2, "impressions": 60, "ctr": 3.33, "position": 1.6}, {"keyword": "大林組人事", "clicks": 2, "impressions": 4, "ctr": 50.0, "position": 8.8}, {"keyword": "奥村組 年収", "clicks": 2, "impressions": 287, "ctr": 0.7, "position": 13.4}, {"keyword": "奥村組 退職金", "clicks": 2, "impressions": 96, "ctr": 2.08, "position": 3.5}, {"keyword": "戸田建設 年収", "clicks": 2, "impressions": 273, "ctr": 0.73, "position": 13.6}, {"keyword": "新日本建設 福利厚生", "clicks": 2, "impressions": 14, "ctr": 14.29, "position": 7.5}, {"keyword": "日揮 最終面接", "clicks": 2, "impressions": 9, "ctr": 22.22, "position": 11.4}, {"keyword": "日揮 最終面接 落ちる", "clicks": 2, "impressions": 28, "ctr": 7.14, "position": 7.6}, {"keyword": "日揮 最終面接通過率", "clicks": 2, "impressions": 3, "ctr": 66.67, "position": 8.3}, {"keyword": "清水建設 就職偏差値", "clicks": 2, "impressions": 45, "ctr": 4.44, "position": 1.8}]}, "sc_pages": {"period": "2026-02-13 〜 2026-03-12", "rows": [{"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 75, "impressions": 8675, "ctr": 0.86, "position": 5.6}, {"url": "https://morinotakumi.com/71/", "path": "/71/", "clicks": 43, "impressions": 2453, "ctr": 1.75, "position": 4.0}, {"url": "https://morinotakumi.com/114/", "path": "/114/", "clicks": 39, "impressions": 2835, "ctr": 1.38, "position": 6.8}, {"url": "https://morinotakumi.com/153/", "path": "/153/", "clicks": 33, "impressions": 3663, "ctr": 0.9, "position": 7.5}, {"url": "https://morinotakumi.com/322/", "path": "/322/", "clicks": 30, "impressions": 1621, "ctr": 1.85, "position": 4.8}, {"url": "https://morinotakumi.com/94/", "path": "/94/", "clicks": 29, "impressions": 3217, "ctr": 0.9, "position": 8.0}, {"url": "https://morinotakumi.com/50/", "path": "/50/", "clicks": 23, "impressions": 11777, "ctr": 0.2, "position": 6.5}, {"url": "https://morinotakumi.com/89/", "path": "/89/", "clicks": 21, "impressions": 2014, "ctr": 1.04, "position": 4.9}, {"url": "https://morinotakumi.com/138/", "path": "/138/", "clicks": 20, "impressions": 2631, "ctr": 0.76, "position": 9.8}, {"url": "https://morinotakumi.com/83/", "path": "/83/", "clicks": 19, "impressions": 1635, "ctr": 1.16, "position": 8.6}, {"url": "https://morinotakumi.com/92/", "path": "/92/", "clicks": 17, "impressions": 1695, "ctr": 1.0, "position": 8.0}, {"url": "https://morinotakumi.com/151/", "path": "/151/", "clicks": 15, "impressions": 2796, "ctr": 0.54, "position": 6.5}, {"url": "https://morinotakumi.com/292/", "path": "/292/", "clicks": 15, "impressions": 1655, "ctr": 0.91, "position": 8.0}, {"url": "https://morinotakumi.com/309/", "path": "/309/", "clicks": 14, "impressions": 773, "ctr": 1.81, "position": 4.4}, {"url": "https://morinotakumi.com/100/", "path": "/100/", "clicks": 13, "impressions": 285, "ctr": 4.56, "position": 11.9}, {"url": "https://morinotakumi.com/136/", "path": "/136/", "clicks": 13, "impressions": 535, "ctr": 2.43, "position": 4.1}, {"url": "https://morinotakumi.com/56/", "path": "/56/", "clicks": 13, "impressions": 6652, "ctr": 0.2, "position": 10.1}, {"url": "https://morinotakumi.com/85/", "path": "/85/", "clicks": 13, "impressions": 2037, "ctr": 0.64, "position": 6.8}, {"url": "https://morinotakumi.com/320/", "path": "/320/", "clicks": 12, "impressions": 1621, "ctr": 0.74, "position": 6.2}, {"url": "https://morinotakumi.com/120/", "path": "/120/", "clicks": 11, "impressions": 1039, "ctr": 1.06, "position": 6.3}, {"url": "https://morinotakumi.com/149/", "path": "/149/", "clicks": 11, "impressions": 1114, "ctr": 0.99, "position": 12.3}, {"url": "https://morinotakumi.com/327/", "path": "/327/", "clicks": 11, "impressions": 1191, "ctr": 0.92, "position": 3.4}, {"url": "https://morinotakumi.com/349/", "path": "/349/", "clicks": 11, "impressions": 441, "ctr": 2.49, "position": 6.3}, {"url": "https://morinotakumi.com/285/", "path": "/285/", "clicks": 10, "impressions": 2027, "ctr": 0.49, "position": 12.6}, {"url": "https://morinotakumi.com/339/", "path": "/339/", "clicks": 10, "impressions": 1570, "ctr": 0.64, "position": 3.7}, {"url": "https://morinotakumi.com/128/", "path": "/128/", "clicks": 9, "impressions": 1322, "ctr": 0.68, "position": 12.6}, {"url": "https://morinotakumi.com/142/", "path": "/142/", "clicks": 9, "impressions": 3970, "ctr": 0.23, "position": 8.7}, {"url": "https://morinotakumi.com/283/", "path": "/283/", "clicks": 9, "impressions": 1929, "ctr": 0.47, "position": 8.2}, {"url": "https://morinotakumi.com/329/", "path": "/329/", "clicks": 9, "impressions": 829, "ctr": 1.09, "position": 6.2}, {"url": "https://morinotakumi.com/347/", "path": "/347/", "clicks": 9, "impressions": 762, "ctr": 1.18, "position": 4.6}, {"url": "https://morinotakumi.com/108/", "path": "/108/", "clicks": 8, "impressions": 1088, "ctr": 0.74, "position": 14.3}, {"url": "https://morinotakumi.com/255/", "path": "/255/", "clicks": 8, "impressions": 2097, "ctr": 0.38, "position": 11.0}, {"url": "https://morinotakumi.com/296/", "path": "/296/", "clicks": 8, "impressions": 1667, "ctr": 0.48, "position": 6.7}, {"url": "https://morinotakumi.com/316/", "path": "/316/", "clicks": 8, "impressions": 598, "ctr": 1.34, "position": 7.3}, {"url": "https://morinotakumi.com/263/", "path": "/263/", "clicks": 7, "impressions": 3108, "ctr": 0.23, "position": 11.7}, {"url": "https://morinotakumi.com/281/", "path": "/281/", "clicks": 7, "impressions": 1156, "ctr": 0.61, "position": 9.4}, {"url": "https://morinotakumi.com/300/", "path": "/300/", "clicks": 7, "impressions": 1879, "ctr": 0.37, "position": 8.4}, {"url": "https://morinotakumi.com/302/", "path": "/302/", "clicks": 7, "impressions": 1061, "ctr": 0.66, "position": 7.8}, {"url": "https://morinotakumi.com/124/", "path": "/124/", "clicks": 6, "impressions": 1071, "ctr": 0.56, "position": 22.3}, {"url": "https://morinotakumi.com/298/", "path": "/298/", "clicks": 6, "impressions": 3366, "ctr": 0.18, "position": 8.9}, {"url": "https://morinotakumi.com/306/", "path": "/306/", "clicks": 6, "impressions": 653, "ctr": 0.92, "position": 4.3}, {"url": "https://morinotakumi.com/341/", "path": "/341/", "clicks": 6, "impressions": 756, "ctr": 0.79, "position": 4.6}, {"url": "https://morinotakumi.com/343/", "path": "/343/", "clicks": 6, "impressions": 508, "ctr": 1.18, "position": 6.5}, {"url": "https://morinotakumi.com/35/", "path": "/35/", "clicks": 6, "impressions": 4518, "ctr": 0.13, "position": 10.5}, {"url": "https://morinotakumi.com/587/", "path": "/587/", "clicks": 6, "impressions": 737, "ctr": 0.81, "position": 6.4}, {"url": "https://morinotakumi.com/98/", "path": "/98/", "clicks": 6, "impressions": 1284, "ctr": 0.47, "position": 6.3}, {"url": "https://morinotakumi.com/304/", "path": "/304/", "clicks": 5, "impressions": 1408, "ctr": 0.36, "position": 3.6}, {"url": "https://morinotakumi.com/336/", "path": "/336/", "clicks": 5, "impressions": 459, "ctr": 1.09, "position": 5.3}, {"url": "https://morinotakumi.com/102/", "path": "/102/", "clicks": 4, "impressions": 246, "ctr": 1.63, "position": 7.2}, {"url": "https://morinotakumi.com/132/", "path": "/132/", "clicks": 4, "impressions": 1183, "ctr": 0.34, "position": 16.9}]}, "sc_pages_index": {"period": "2026-02-13 〜 2026-03-12", "rows": [{"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 75, "impressions": 8675, "ctr": 0.86, "position": 5.6, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/71/", "path": "/71/", "clicks": 43, "impressions": 2453, "ctr": 1.75, "position": 4.0, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/114/", "path": "/114/", "clicks": 39, "impressions": 2835, "ctr": 1.38, "position": 6.8, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/153/", "path": "/153/", "clicks": 33, "impressions": 3663, "ctr": 0.9, "position": 7.5, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/322/", "path": "/322/", "clicks": 30, "impressions": 1621, "ctr": 1.85, "position": 4.8, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/94/", "path": "/94/", "clicks": 29, "impressions": 3217, "ctr": 0.9, "position": 8.0, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/50/", "path": "/50/", "clicks": 23, "impressions": 11777, "ctr": 0.2, "position": 6.5, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/89/", "path": "/89/", "clicks": 21, "impressions": 2014, "ctr": 1.04, "position": 4.9, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/138/", "path": "/138/", "clicks": 20, "impressions": 2631, "ctr": 0.76, "position": 9.8, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/83/", "path": "/83/", "clicks": 19, "impressions": 1635, "ctr": 1.16, "position": 8.6, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/92/", "path": "/92/", "clicks": 17, "impressions": 1695, "ctr": 1.0, "position": 8.0, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/151/", "path": "/151/", "clicks": 15, "impressions": 2796, "ctr": 0.54, "position": 6.5, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/292/", "path": "/292/", "clicks": 15, "impressions": 1655, "ctr": 0.91, "position": 8.0, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/309/", "path": "/309/", "clicks": 14, "impressions": 773, "ctr": 1.81, "position": 4.4, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/100/", "path": "/100/", "clicks": 13, "impressions": 285, "ctr": 4.56, "position": 11.9, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/136/", "path": "/136/", "clicks": 13, "impressions": 535, "ctr": 2.43, "position": 4.1, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/56/", "path": "/56/", "clicks": 13, "impressions": 6652, "ctr": 0.2, "position": 10.1, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/85/", "path": "/85/", "clicks": 13, "impressions": 2037, "ctr": 0.64, "position": 6.8, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/320/", "path": "/320/", "clicks": 12, "impressions": 1621, "ctr": 0.74, "position": 6.2, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/120/", "path": "/120/", "clicks": 11, "impressions": 1039, "ctr": 1.06, "position": 6.3, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/149/", "path": "/149/", "clicks": 11, "impressions": 1114, "ctr": 0.99, "position": 12.3, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/327/", "path": "/327/", "clicks": 11, "impressions": 1191, "ctr": 0.92, "position": 3.4, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/349/", "path": "/349/", "clicks": 11, "impressions": 441, "ctr": 2.49, "position": 6.3, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/285/", "path": "/285/", "clicks": 10, "impressions": 2027, "ctr": 0.49, "position": 12.6, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/339/", "path": "/339/", "clicks": 10, "impressions": 1570, "ctr": 0.64, "position": 3.7, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/128/", "path": "/128/", "clicks": 9, "impressions": 1322, "ctr": 0.68, "position": 12.6, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/142/", "path": "/142/", "clicks": 9, "impressions": 3970, "ctr": 0.23, "position": 8.7, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/283/", "path": "/283/", "clicks": 9, "impressions": 1929, "ctr": 0.47, "position": 8.2, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/329/", "path": "/329/", "clicks": 9, "impressions": 829, "ctr": 1.09, "position": 6.2, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/347/", "path": "/347/", "clicks": 9, "impressions": 762, "ctr": 1.18, "position": 4.6, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/108/", "path": "/108/", "clicks": 8, "impressions": 1088, "ctr": 0.74, "position": 14.3, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/255/", "path": "/255/", "clicks": 8, "impressions": 2097, "ctr": 0.38, "position": 11.0, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/296/", "path": "/296/", "clicks": 8, "impressions": 1667, "ctr": 0.48, "position": 6.7, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/316/", "path": "/316/", "clicks": 8, "impressions": 598, "ctr": 1.34, "position": 7.3, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/263/", "path": "/263/", "clicks": 7, "impressions": 3108, "ctr": 0.23, "position": 11.7, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/281/", "path": "/281/", "clicks": 7, "impressions": 1156, "ctr": 0.61, "position": 9.4, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/300/", "path": "/300/", "clicks": 7, "impressions": 1879, "ctr": 0.37, "position": 8.4, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/302/", "path": "/302/", "clicks": 7, "impressions": 1061, "ctr": 0.66, "position": 7.8, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/124/", "path": "/124/", "clicks": 6, "impressions": 1071, "ctr": 0.56, "position": 22.3, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/298/", "path": "/298/", "clicks": 6, "impressions": 3366, "ctr": 0.18, "position": 8.9, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/306/", "path": "/306/", "clicks": 6, "impressions": 653, "ctr": 0.92, "position": 4.3, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/341/", "path": "/341/", "clicks": 6, "impressions": 756, "ctr": 0.79, "position": 4.6, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/343/", "path": "/343/", "clicks": 6, "impressions": 508, "ctr": 1.18, "position": 6.5, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/35/", "path": "/35/", "clicks": 6, "impressions": 4518, "ctr": 0.13, "position": 10.5, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/587/", "path": "/587/", "clicks": 6, "impressions": 737, "ctr": 0.81, "position": 6.4, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/98/", "path": "/98/", "clicks": 6, "impressions": 1284, "ctr": 0.47, "position": 6.3, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/304/", "path": "/304/", "clicks": 5, "impressions": 1408, "ctr": 0.36, "position": 3.6, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/336/", "path": "/336/", "clicks": 5, "impressions": 459, "ctr": 1.09, "position": 5.3, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/102/", "path": "/102/", "clicks": 4, "impressions": 246, "ctr": 1.63, "position": 7.2, "index_state": "権限不足（SC要オーナー権限）"}, {"url": "https://morinotakumi.com/132/", "path": "/132/", "clicks": 4, "impressions": 1183, "ctr": 0.34, "position": 16.9, "index_state": "権限不足（SC要オーナー権限）"}]}, "cannibalization": {"period": "2026-02-13 〜 2026-03-12", "rows": [{"keyword": "大成建設 やばい", "page_count": 2, "total_clicks": 2, "total_impressions": 2916, "pages": [{"url": "https://morinotakumi.com/56/", "path": "/56/", "clicks": 1, "impressions": 31, "ctr": 3.23, "position": 1.1}, {"url": "https://morinotakumi.com/122/", "path": "/122/", "clicks": 1, "impressions": 2885, "ctr": 0.03, "position": 5.5}]}, {"keyword": "きんでん 年収", "page_count": 12, "total_clicks": 12, "total_impressions": 2640, "pages": [{"url": "https://morinotakumi.com/302/", "path": "/302/", "clicks": 0, "impressions": 10, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/320/", "path": "/320/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/341/", "path": "/341/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/50/", "path": "/50/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 12, "impressions": 2038, "ctr": 0.59, "position": 6.2}, {"url": "https://morinotakumi.com/104/#index_id10", "path": "/104/#index_id10", "clicks": 0, "impressions": 116, "ctr": 0, "position": 12.3}, {"url": "https://morinotakumi.com/104/#index_id3", "path": "/104/#index_id3", "clicks": 0, "impressions": 116, "ctr": 0, "position": 12.3}, {"url": "https://morinotakumi.com/104/#index_id0", "path": "/104/#index_id0", "clicks": 0, "impressions": 102, "ctr": 0, "position": 12.4}, {"url": "https://morinotakumi.com/104/#index_id14", "path": "/104/#index_id14", "clicks": 0, "impressions": 102, "ctr": 0, "position": 12.4}, {"url": "https://morinotakumi.com/104/#index_id7", "path": "/104/#index_id7", "clicks": 0, "impressions": 102, "ctr": 0, "position": 12.4}, {"url": "https://morinotakumi.com/73/", "path": "/73/", "clicks": 0, "impressions": 49, "ctr": 0, "position": 37.4}, {"url": "https://morinotakumi.com/category/kinden/", "path": "/category/kinden/", "clicks": 0, "impressions": 2, "ctr": 0, "position": 54.5}]}, {"keyword": "きんでん 就職難易度", "page_count": 9, "total_clicks": 14, "total_impressions": 1204, "pages": [{"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 14, "impressions": 266, "ctr": 5.26, "position": 1.1}, {"url": "https://morinotakumi.com/104/#index_id10", "path": "/104/#index_id10", "clicks": 0, "impressions": 196, "ctr": 0, "position": 3.9}, {"url": "https://morinotakumi.com/104/#index_id3", "path": "/104/#index_id3", "clicks": 0, "impressions": 196, "ctr": 0, "position": 3.9}, {"url": "https://morinotakumi.com/104/#index_id0", "path": "/104/#index_id0", "clicks": 0, "impressions": 176, "ctr": 0, "position": 4.0}, {"url": "https://morinotakumi.com/104/#index_id14", "path": "/104/#index_id14", "clicks": 0, "impressions": 176, "ctr": 0, "position": 4.0}, {"url": "https://morinotakumi.com/104/#index_id7", "path": "/104/#index_id7", "clicks": 0, "impressions": 176, "ctr": 0, "position": 4.0}, {"url": "https://morinotakumi.com/category/kinden/", "path": "/category/kinden/", "clicks": 0, "impressions": 11, "ctr": 0, "position": 32.5}, {"url": "https://morinotakumi.com/73/", "path": "/73/", "clicks": 0, "impressions": 6, "ctr": 0, "position": 44.2}, {"url": "https://morinotakumi.com/71/", "path": "/71/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 55}]}, {"keyword": "きんでん やばい", "page_count": 2, "total_clicks": 2, "total_impressions": 760, "pages": [{"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 2, "impressions": 759, "ctr": 0.26, "position": 2.3}, {"url": "https://morinotakumi.com/73/", "path": "/73/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 3}]}, {"keyword": "きんでん 勝ち組", "page_count": 6, "total_clicks": 0, "total_impressions": 550, "pages": [{"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 133, "ctr": 0, "position": 3.5}, {"url": "https://morinotakumi.com/104/#index_id0", "path": "/104/#index_id0", "clicks": 0, "impressions": 84, "ctr": 0, "position": 6.0}, {"url": "https://morinotakumi.com/104/#index_id10", "path": "/104/#index_id10", "clicks": 0, "impressions": 87, "ctr": 0, "position": 6.0}, {"url": "https://morinotakumi.com/104/#index_id14", "path": "/104/#index_id14", "clicks": 0, "impressions": 81, "ctr": 0, "position": 6}, {"url": "https://morinotakumi.com/104/#index_id3", "path": "/104/#index_id3", "clicks": 0, "impressions": 84, "ctr": 0, "position": 6.0}, {"url": "https://morinotakumi.com/104/#index_id7", "path": "/104/#index_id7", "clicks": 0, "impressions": 81, "ctr": 0, "position": 6}]}, {"keyword": "きんでん 離職率", "page_count": 6, "total_clicks": 3, "total_impressions": 509, "pages": [{"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 3, "impressions": 108, "ctr": 2.78, "position": 1.2}, {"url": "https://morinotakumi.com/104/#index_id0", "path": "/104/#index_id0", "clicks": 0, "impressions": 75, "ctr": 0, "position": 7.0}, {"url": "https://morinotakumi.com/104/#index_id10", "path": "/104/#index_id10", "clicks": 0, "impressions": 75, "ctr": 0, "position": 7.0}, {"url": "https://morinotakumi.com/104/#index_id14", "path": "/104/#index_id14", "clicks": 0, "impressions": 88, "ctr": 0, "position": 7.0}, {"url": "https://morinotakumi.com/104/#index_id3", "path": "/104/#index_id3", "clicks": 0, "impressions": 88, "ctr": 0, "position": 7.0}, {"url": "https://morinotakumi.com/104/#index_id7", "path": "/104/#index_id7", "clicks": 0, "impressions": 75, "ctr": 0, "position": 7.0}]}, {"keyword": "エクシオグループ 年収", "page_count": 2, "total_clicks": 0, "total_impressions": 450, "pages": [{"url": "https://morinotakumi.com/144/", "path": "/144/", "clicks": 0, "impressions": 449, "ctr": 0, "position": 5.1}, {"url": "https://morinotakumi.com/category/exeo/", "path": "/category/exeo/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 38}]}, {"keyword": "きんでん 初任給", "page_count": 2, "total_clicks": 0, "total_impressions": 325, "pages": [{"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 312, "ctr": 0, "position": 2.4}, {"url": "https://morinotakumi.com/73/", "path": "/73/", "clicks": 0, "impressions": 13, "ctr": 0, "position": 5.8}]}, {"keyword": "きんでん 年収 大卒", "page_count": 7, "total_clicks": 2, "total_impressions": 261, "pages": [{"url": "https://morinotakumi.com/73/", "path": "/73/", "clicks": 0, "impressions": 23, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 2, "impressions": 44, "ctr": 4.55, "position": 5.4}, {"url": "https://morinotakumi.com/104/#index_id0", "path": "/104/#index_id0", "clicks": 0, "impressions": 39, "ctr": 0, "position": 7.1}, {"url": "https://morinotakumi.com/104/#index_id14", "path": "/104/#index_id14", "clicks": 0, "impressions": 38, "ctr": 0, "position": 7.1}, {"url": "https://morinotakumi.com/104/#index_id7", "path": "/104/#index_id7", "clicks": 0, "impressions": 38, "ctr": 0, "position": 7.1}, {"url": "https://morinotakumi.com/104/#index_id10", "path": "/104/#index_id10", "clicks": 0, "impressions": 40, "ctr": 0, "position": 7.2}, {"url": "https://morinotakumi.com/104/#index_id3", "path": "/104/#index_id3", "clicks": 0, "impressions": 39, "ctr": 0, "position": 7.2}]}, {"keyword": "きんでん年収", "page_count": 8, "total_clicks": 1, "total_impressions": 247, "pages": [{"url": "https://morinotakumi.com/302/", "path": "/302/", "clicks": 0, "impressions": 4, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 1, "impressions": 203, "ctr": 0.49, "position": 6.6}, {"url": "https://morinotakumi.com/104/#index_id10", "path": "/104/#index_id10", "clicks": 0, "impressions": 8, "ctr": 0, "position": 12.5}, {"url": "https://morinotakumi.com/104/#index_id3", "path": "/104/#index_id3", "clicks": 0, "impressions": 8, "ctr": 0, "position": 12.5}, {"url": "https://morinotakumi.com/104/#index_id0", "path": "/104/#index_id0", "clicks": 0, "impressions": 7, "ctr": 0, "position": 12.6}, {"url": "https://morinotakumi.com/104/#index_id14", "path": "/104/#index_id14", "clicks": 0, "impressions": 7, "ctr": 0, "position": 12.6}, {"url": "https://morinotakumi.com/104/#index_id7", "path": "/104/#index_id7", "clicks": 0, "impressions": 7, "ctr": 0, "position": 12.6}, {"url": "https://morinotakumi.com/73/", "path": "/73/", "clicks": 0, "impressions": 3, "ctr": 0, "position": 67.3}]}, {"keyword": "きんでん", "page_count": 2, "total_clicks": 1, "total_impressions": 199, "pages": [{"url": "https://morinotakumi.com/73/", "path": "/73/", "clicks": 0, "impressions": 5, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 1, "impressions": 194, "ctr": 0.52, "position": 2.1}]}, {"keyword": "きんでん就職難易度", "page_count": 6, "total_clicks": 4, "total_impressions": 173, "pages": [{"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 4, "impressions": 38, "ctr": 10.53, "position": 1}, {"url": "https://morinotakumi.com/104/#index_id0", "path": "/104/#index_id0", "clicks": 0, "impressions": 25, "ctr": 0, "position": 3.8}, {"url": "https://morinotakumi.com/104/#index_id14", "path": "/104/#index_id14", "clicks": 0, "impressions": 25, "ctr": 0, "position": 3.8}, {"url": "https://morinotakumi.com/104/#index_id7", "path": "/104/#index_id7", "clicks": 0, "impressions": 25, "ctr": 0, "position": 3.8}, {"url": "https://morinotakumi.com/104/#index_id10", "path": "/104/#index_id10", "clicks": 0, "impressions": 30, "ctr": 0, "position": 3.9}, {"url": "https://morinotakumi.com/104/#index_id3", "path": "/104/#index_id3", "clicks": 0, "impressions": 30, "ctr": 0, "position": 3.9}]}, {"keyword": "前田建設工業 就職難易度", "page_count": 2, "total_clicks": 3, "total_impressions": 144, "pages": [{"url": "https://morinotakumi.com/102/", "path": "/102/", "clicks": 2, "impressions": 71, "ctr": 2.82, "position": 7.3}, {"url": "https://morinotakumi.com/71/", "path": "/71/", "clicks": 1, "impressions": 73, "ctr": 1.37, "position": 10.5}]}, {"keyword": "イチケン ゼネコン ランキング", "page_count": 7, "total_clicks": 0, "total_impressions": 122, "pages": [{"url": "https://morinotakumi.com/343/#index_id0", "path": "/343/#index_id0", "clicks": 0, "impressions": 7, "ctr": 0, "position": 11.7}, {"url": "https://morinotakumi.com/343/#index_id14", "path": "/343/#index_id14", "clicks": 0, "impressions": 7, "ctr": 0, "position": 11.7}, {"url": "https://morinotakumi.com/343/#index_id3", "path": "/343/#index_id3", "clicks": 0, "impressions": 7, "ctr": 0, "position": 11.7}, {"url": "https://morinotakumi.com/343/#index_id7", "path": "/343/#index_id7", "clicks": 0, "impressions": 7, "ctr": 0, "position": 11.7}, {"url": "https://morinotakumi.com/343/", "path": "/343/", "clicks": 0, "impressions": 78, "ctr": 0, "position": 11.8}, {"url": "https://morinotakumi.com/343/#index_id10", "path": "/343/#index_id10", "clicks": 0, "impressions": 8, "ctr": 0, "position": 11.8}, {"url": "https://morinotakumi.com/343/#index_id17", "path": "/343/#index_id17", "clicks": 0, "impressions": 8, "ctr": 0, "position": 11.8}]}, {"keyword": "きんでん 難易度", "page_count": 6, "total_clicks": 1, "total_impressions": 120, "pages": [{"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 1, "impressions": 26, "ctr": 3.85, "position": 1.1}, {"url": "https://morinotakumi.com/104/#index_id0", "path": "/104/#index_id0", "clicks": 0, "impressions": 18, "ctr": 0, "position": 3.7}, {"url": "https://morinotakumi.com/104/#index_id14", "path": "/104/#index_id14", "clicks": 0, "impressions": 18, "ctr": 0, "position": 3.7}, {"url": "https://morinotakumi.com/104/#index_id7", "path": "/104/#index_id7", "clicks": 0, "impressions": 18, "ctr": 0, "position": 3.7}, {"url": "https://morinotakumi.com/104/#index_id10", "path": "/104/#index_id10", "clicks": 0, "impressions": 20, "ctr": 0, "position": 3.8}, {"url": "https://morinotakumi.com/104/#index_id3", "path": "/104/#index_id3", "clicks": 0, "impressions": 20, "ctr": 0, "position": 3.8}]}, {"keyword": "きんでん 年収 高卒", "page_count": 2, "total_clicks": 0, "total_impressions": 120, "pages": [{"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 118, "ctr": 0, "position": 7.2}, {"url": "https://morinotakumi.com/73/", "path": "/73/", "clicks": 0, "impressions": 2, "ctr": 0, "position": 50.5}]}, {"keyword": "きんでん 高卒 難易度", "page_count": 6, "total_clicks": 2, "total_impressions": 118, "pages": [{"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 2, "impressions": 27, "ctr": 7.41, "position": 1.2}, {"url": "https://morinotakumi.com/104/#index_id0", "path": "/104/#index_id0", "clicks": 0, "impressions": 17, "ctr": 0, "position": 2.5}, {"url": "https://morinotakumi.com/104/#index_id10", "path": "/104/#index_id10", "clicks": 0, "impressions": 20, "ctr": 0, "position": 2.5}, {"url": "https://morinotakumi.com/104/#index_id14", "path": "/104/#index_id14", "clicks": 0, "impressions": 17, "ctr": 0, "position": 2.5}, {"url": "https://morinotakumi.com/104/#index_id3", "path": "/104/#index_id3", "clicks": 0, "impressions": 20, "ctr": 0, "position": 2.5}, {"url": "https://morinotakumi.com/104/#index_id7", "path": "/104/#index_id7", "clicks": 0, "impressions": 17, "ctr": 0, "position": 2.5}]}, {"keyword": "きんでん 総合職 年収", "page_count": 7, "total_clicks": 0, "total_impressions": 116, "pages": [{"url": "https://morinotakumi.com/73/", "path": "/73/", "clicks": 0, "impressions": 7, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/104/#index_id10", "path": "/104/#index_id10", "clicks": 0, "impressions": 17, "ctr": 0, "position": 9.6}, {"url": "https://morinotakumi.com/104/#index_id7", "path": "/104/#index_id7", "clicks": 0, "impressions": 17, "ctr": 0, "position": 9.6}, {"url": "https://morinotakumi.com/104/#index_id0", "path": "/104/#index_id0", "clicks": 0, "impressions": 16, "ctr": 0, "position": 9.7}, {"url": "https://morinotakumi.com/104/#index_id14", "path": "/104/#index_id14", "clicks": 0, "impressions": 16, "ctr": 0, "position": 9.7}, {"url": "https://morinotakumi.com/104/#index_id3", "path": "/104/#index_id3", "clicks": 0, "impressions": 16, "ctr": 0, "position": 9.7}, {"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 27, "ctr": 0, "position": 10}]}, {"keyword": "きんでん 倍率", "page_count": 6, "total_clicks": 0, "total_impressions": 96, "pages": [{"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 21, "ctr": 0, "position": 1.2}, {"url": "https://morinotakumi.com/104/#index_id0", "path": "/104/#index_id0", "clicks": 0, "impressions": 15, "ctr": 0, "position": 5.4}, {"url": "https://morinotakumi.com/104/#index_id10", "path": "/104/#index_id10", "clicks": 0, "impressions": 15, "ctr": 0, "position": 5.4}, {"url": "https://morinotakumi.com/104/#index_id14", "path": "/104/#index_id14", "clicks": 0, "impressions": 15, "ctr": 0, "position": 5.4}, {"url": "https://morinotakumi.com/104/#index_id3", "path": "/104/#index_id3", "clicks": 0, "impressions": 15, "ctr": 0, "position": 5.4}, {"url": "https://morinotakumi.com/104/#index_id7", "path": "/104/#index_id7", "clicks": 0, "impressions": 15, "ctr": 0, "position": 5.4}]}, {"keyword": "きんでん初任給", "page_count": 2, "total_clicks": 0, "total_impressions": 92, "pages": [{"url": "https://morinotakumi.com/73/", "path": "/73/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 91, "ctr": 0, "position": 1.8}]}, {"keyword": "イチケン 年収", "page_count": 2, "total_clicks": 0, "total_impressions": 86, "pages": [{"url": "https://morinotakumi.com/467/", "path": "/467/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/343/", "path": "/343/", "clicks": 0, "impressions": 85, "ctr": 0, "position": 6.5}]}, {"keyword": "きんでん 新卒", "page_count": 6, "total_clicks": 1, "total_impressions": 81, "pages": [{"url": "https://morinotakumi.com/104/#index_id0", "path": "/104/#index_id0", "clicks": 0, "impressions": 11, "ctr": 0, "position": 9.4}, {"url": "https://morinotakumi.com/104/#index_id14", "path": "/104/#index_id14", "clicks": 0, "impressions": 11, "ctr": 0, "position": 9.4}, {"url": "https://morinotakumi.com/104/#index_id7", "path": "/104/#index_id7", "clicks": 0, "impressions": 11, "ctr": 0, "position": 9.4}, {"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 1, "impressions": 18, "ctr": 5.56, "position": 9.7}, {"url": "https://morinotakumi.com/104/#index_id10", "path": "/104/#index_id10", "clicks": 0, "impressions": 15, "ctr": 0, "position": 9.7}, {"url": "https://morinotakumi.com/104/#index_id3", "path": "/104/#index_id3", "clicks": 0, "impressions": 15, "ctr": 0, "position": 9.7}]}, {"keyword": "きんでん 就職偏差値", "page_count": 7, "total_clicks": 1, "total_impressions": 79, "pages": [{"url": "https://morinotakumi.com/73/", "path": "/73/", "clicks": 0, "impressions": 6, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 1, "impressions": 31, "ctr": 3.23, "position": 7.7}, {"url": "https://morinotakumi.com/104/#index_id0", "path": "/104/#index_id0", "clicks": 0, "impressions": 8, "ctr": 0, "position": 8.1}, {"url": "https://morinotakumi.com/104/#index_id14", "path": "/104/#index_id14", "clicks": 0, "impressions": 8, "ctr": 0, "position": 8.1}, {"url": "https://morinotakumi.com/104/#index_id7", "path": "/104/#index_id7", "clicks": 0, "impressions": 8, "ctr": 0, "position": 8.1}, {"url": "https://morinotakumi.com/104/#index_id10", "path": "/104/#index_id10", "clicks": 0, "impressions": 9, "ctr": 0, "position": 8.4}, {"url": "https://morinotakumi.com/104/#index_id3", "path": "/104/#index_id3", "clicks": 0, "impressions": 9, "ctr": 0, "position": 8.4}]}, {"keyword": "きんでん 平均年収", "page_count": 2, "total_clicks": 1, "total_impressions": 76, "pages": [{"url": "https://morinotakumi.com/73/", "path": "/73/", "clicks": 0, "impressions": 9, "ctr": 0, "position": 6.2}, {"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 1, "impressions": 67, "ctr": 1.49, "position": 9.6}]}, {"keyword": "きんでん 給料", "page_count": 2, "total_clicks": 0, "total_impressions": 73, "pages": [{"url": "https://morinotakumi.com/300/", "path": "/300/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 72, "ctr": 0, "position": 5.2}]}, {"keyword": "きんでん 高卒 年収", "page_count": 2, "total_clicks": 1, "total_impressions": 61, "pages": [{"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 1, "impressions": 60, "ctr": 1.67, "position": 7.1}, {"url": "https://morinotakumi.com/73/", "path": "/73/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 45}]}, {"keyword": "きんでん離職率", "page_count": 6, "total_clicks": 1, "total_impressions": 61, "pages": [{"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 1, "impressions": 14, "ctr": 7.14, "position": 1}, {"url": "https://morinotakumi.com/104/#index_id0", "path": "/104/#index_id0", "clicks": 0, "impressions": 9, "ctr": 0, "position": 6.8}, {"url": "https://morinotakumi.com/104/#index_id10", "path": "/104/#index_id10", "clicks": 0, "impressions": 9, "ctr": 0, "position": 6.8}, {"url": "https://morinotakumi.com/104/#index_id7", "path": "/104/#index_id7", "clicks": 0, "impressions": 9, "ctr": 0, "position": 6.8}, {"url": "https://morinotakumi.com/104/#index_id14", "path": "/104/#index_id14", "clicks": 0, "impressions": 10, "ctr": 0, "position": 6.9}, {"url": "https://morinotakumi.com/104/#index_id3", "path": "/104/#index_id3", "clicks": 0, "impressions": 10, "ctr": 0, "position": 6.9}]}, {"keyword": "きんでん 転職", "page_count": 2, "total_clicks": 0, "total_impressions": 61, "pages": [{"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 47, "ctr": 0, "position": 36.1}, {"url": "https://morinotakumi.com/73/", "path": "/73/", "clicks": 0, "impressions": 14, "ctr": 0, "position": 44.1}]}, {"keyword": "きんでん 高卒 初任給", "page_count": 6, "total_clicks": 0, "total_impressions": 58, "pages": [{"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 26, "ctr": 0, "position": 7.0}, {"url": "https://morinotakumi.com/104/#index_id0", "path": "/104/#index_id0", "clicks": 0, "impressions": 6, "ctr": 0, "position": 7}, {"url": "https://morinotakumi.com/104/#index_id10", "path": "/104/#index_id10", "clicks": 0, "impressions": 7, "ctr": 0, "position": 7}, {"url": "https://morinotakumi.com/104/#index_id14", "path": "/104/#index_id14", "clicks": 0, "impressions": 6, "ctr": 0, "position": 7}, {"url": "https://morinotakumi.com/104/#index_id3", "path": "/104/#index_id3", "clicks": 0, "impressions": 7, "ctr": 0, "position": 7}, {"url": "https://morinotakumi.com/104/#index_id7", "path": "/104/#index_id7", "clicks": 0, "impressions": 6, "ctr": 0, "position": 7}]}, {"keyword": "エクシオグループ 年収 課長", "page_count": 5, "total_clicks": 0, "total_impressions": 53, "pages": [{"url": "https://morinotakumi.com/144/#index_id0", "path": "/144/#index_id0", "clicks": 0, "impressions": 9, "ctr": 0, "position": 8.7}, {"url": "https://morinotakumi.com/144/#index_id11", "path": "/144/#index_id11", "clicks": 0, "impressions": 9, "ctr": 0, "position": 8.7}, {"url": "https://morinotakumi.com/144/#index_id14", "path": "/144/#index_id14", "clicks": 0, "impressions": 11, "ctr": 0, "position": 9}, {"url": "https://morinotakumi.com/144/#index_id4", "path": "/144/#index_id4", "clicks": 0, "impressions": 11, "ctr": 0, "position": 9}, {"url": "https://morinotakumi.com/144/", "path": "/144/", "clicks": 0, "impressions": 13, "ctr": 0, "position": 9.5}]}, {"keyword": "イチケン やばい", "page_count": 4, "total_clicks": 1, "total_impressions": 48, "pages": [{"url": "https://morinotakumi.com/343/", "path": "/343/", "clicks": 0, "impressions": 2, "ctr": 0, "position": 3.5}, {"url": "https://morinotakumi.com/122/", "path": "/122/", "clicks": 1, "impressions": 44, "ctr": 2.27, "position": 10.8}, {"url": "https://morinotakumi.com/114/", "path": "/114/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 26}, {"url": "https://morinotakumi.com/124/", "path": "/124/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 36}]}, {"keyword": "きんでん 本社", "page_count": 2, "total_clicks": 0, "total_impressions": 48, "pages": [{"url": "https://morinotakumi.com/73/", "path": "/73/", "clicks": 0, "impressions": 7, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 41, "ctr": 0, "position": 2.9}]}, {"keyword": "きんでん 採用倍率", "page_count": 6, "total_clicks": 0, "total_impressions": 46, "pages": [{"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 9, "ctr": 0, "position": 1.9}, {"url": "https://morinotakumi.com/104/#index_id10", "path": "/104/#index_id10", "clicks": 0, "impressions": 8, "ctr": 0, "position": 5.6}, {"url": "https://morinotakumi.com/104/#index_id7", "path": "/104/#index_id7", "clicks": 0, "impressions": 8, "ctr": 0, "position": 5.6}, {"url": "https://morinotakumi.com/104/#index_id0", "path": "/104/#index_id0", "clicks": 0, "impressions": 7, "ctr": 0, "position": 5.7}, {"url": "https://morinotakumi.com/104/#index_id14", "path": "/104/#index_id14", "clicks": 0, "impressions": 7, "ctr": 0, "position": 5.7}, {"url": "https://morinotakumi.com/104/#index_id3", "path": "/104/#index_id3", "clicks": 0, "impressions": 7, "ctr": 0, "position": 5.7}]}, {"keyword": "ykk 年収", "page_count": 2, "total_clicks": 0, "total_impressions": 44, "pages": [{"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 43, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/325/", "path": "/325/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 1}]}, {"keyword": "きんでん ボーナス", "page_count": 2, "total_clicks": 0, "total_impressions": 38, "pages": [{"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 37, "ctr": 0, "position": 6.6}, {"url": "https://morinotakumi.com/73/", "path": "/73/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 49}]}, {"keyword": "きんでん 福利厚生 一覧", "page_count": 2, "total_clicks": 1, "total_impressions": 36, "pages": [{"url": "https://morinotakumi.com/73/", "path": "/73/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 1, "impressions": 35, "ctr": 2.86, "position": 3.6}]}, {"keyword": "きんでん 施工管理 年収", "page_count": 7, "total_clicks": 0, "total_impressions": 35, "pages": [{"url": "https://morinotakumi.com/575/", "path": "/575/", "clicks": 0, "impressions": 6, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 24, "ctr": 0, "position": 3.3}, {"url": "https://morinotakumi.com/104/#index_id0", "path": "/104/#index_id0", "clicks": 0, "impressions": 1, "ctr": 0, "position": 12}, {"url": "https://morinotakumi.com/104/#index_id10", "path": "/104/#index_id10", "clicks": 0, "impressions": 1, "ctr": 0, "position": 12}, {"url": "https://morinotakumi.com/104/#index_id14", "path": "/104/#index_id14", "clicks": 0, "impressions": 1, "ctr": 0, "position": 12}, {"url": "https://morinotakumi.com/104/#index_id3", "path": "/104/#index_id3", "clicks": 0, "impressions": 1, "ctr": 0, "position": 12}, {"url": "https://morinotakumi.com/104/#index_id7", "path": "/104/#index_id7", "clicks": 0, "impressions": 1, "ctr": 0, "position": 12}]}, {"keyword": "きんでん 施工管理", "page_count": 2, "total_clicks": 0, "total_impressions": 34, "pages": [{"url": "https://morinotakumi.com/73/", "path": "/73/", "clicks": 0, "impressions": 8, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 26, "ctr": 0, "position": 1.1}]}, {"keyword": "きんでん平均年収", "page_count": 2, "total_clicks": 0, "total_impressions": 32, "pages": [{"url": "https://morinotakumi.com/73/", "path": "/73/", "clicks": 0, "impressions": 4, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 28, "ctr": 0, "position": 11.8}]}, {"keyword": "インフ ロニア ホールディングス 就職 難易度", "page_count": 2, "total_clicks": 3, "total_impressions": 31, "pages": [{"url": "https://morinotakumi.com/136/", "path": "/136/", "clicks": 3, "impressions": 30, "ctr": 10.0, "position": 1.9}, {"url": "https://morinotakumi.com/102/", "path": "/102/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 22}]}, {"keyword": "きんでん 事務職 年収", "page_count": 2, "total_clicks": 0, "total_impressions": 28, "pages": [{"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 27, "ctr": 0, "position": 1.3}, {"url": "https://morinotakumi.com/73/", "path": "/73/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 78}]}, {"keyword": "きんでん 旦那", "page_count": 2, "total_clicks": 0, "total_impressions": 25, "pages": [{"url": "https://morinotakumi.com/73/", "path": "/73/", "clicks": 0, "impressions": 10, "ctr": 0, "position": 2}, {"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 15, "ctr": 0, "position": 2.4}]}, {"keyword": "きんでん 課長 年収", "page_count": 6, "total_clicks": 0, "total_impressions": 24, "pages": [{"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 19, "ctr": 0, "position": 9.6}, {"url": "https://morinotakumi.com/104/#index_id0", "path": "/104/#index_id0", "clicks": 0, "impressions": 1, "ctr": 0, "position": 10}, {"url": "https://morinotakumi.com/104/#index_id10", "path": "/104/#index_id10", "clicks": 0, "impressions": 1, "ctr": 0, "position": 10}, {"url": "https://morinotakumi.com/104/#index_id14", "path": "/104/#index_id14", "clicks": 0, "impressions": 1, "ctr": 0, "position": 10}, {"url": "https://morinotakumi.com/104/#index_id3", "path": "/104/#index_id3", "clicks": 0, "impressions": 1, "ctr": 0, "position": 10}, {"url": "https://morinotakumi.com/104/#index_id7", "path": "/104/#index_id7", "clicks": 0, "impressions": 1, "ctr": 0, "position": 10}]}, {"keyword": "1級建築士 年収", "page_count": 3, "total_clicks": 0, "total_impressions": 21, "pages": [{"url": "https://morinotakumi.com/50/", "path": "/50/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/56/", "path": "/56/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/577/", "path": "/577/", "clicks": 0, "impressions": 19, "ctr": 0, "position": 36.7}]}, {"keyword": "tyo: 6330", "page_count": 2, "total_clicks": 0, "total_impressions": 18, "pages": [{"url": "https://morinotakumi.com/298/", "path": "/298/", "clicks": 0, "impressions": 14, "ctr": 0, "position": 4.5}, {"url": "https://morinotakumi.com/", "path": "/", "clicks": 0, "impressions": 4, "ctr": 0, "position": 7.2}]}, {"keyword": "きんでん 社風", "page_count": 2, "total_clicks": 0, "total_impressions": 18, "pages": [{"url": "https://morinotakumi.com/category/kinden/", "path": "/category/kinden/", "clicks": 0, "impressions": 2, "ctr": 0, "position": 31.5}, {"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 16, "ctr": 0, "position": 43.1}]}, {"keyword": "エクシオグループ やばい", "page_count": 3, "total_clicks": 0, "total_impressions": 18, "pages": [{"url": "https://morinotakumi.com/144/", "path": "/144/", "clicks": 0, "impressions": 16, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/", "path": "/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 3}, {"url": "https://morinotakumi.com/108/", "path": "/108/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 46}]}, {"keyword": "きんでん ボーナス 何 ヶ月分", "page_count": 6, "total_clicks": 0, "total_impressions": 14, "pages": [{"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 7, "ctr": 0, "position": 3.7}, {"url": "https://morinotakumi.com/104/#index_id10", "path": "/104/#index_id10", "clicks": 0, "impressions": 2, "ctr": 0, "position": 6}, {"url": "https://morinotakumi.com/104/#index_id7", "path": "/104/#index_id7", "clicks": 0, "impressions": 2, "ctr": 0, "position": 6}, {"url": "https://morinotakumi.com/104/#index_id0", "path": "/104/#index_id0", "clicks": 0, "impressions": 1, "ctr": 0, "position": 7}, {"url": "https://morinotakumi.com/104/#index_id14", "path": "/104/#index_id14", "clicks": 0, "impressions": 1, "ctr": 0, "position": 7}, {"url": "https://morinotakumi.com/104/#index_id3", "path": "/104/#index_id3", "clicks": 0, "impressions": 1, "ctr": 0, "position": 7}]}, {"keyword": "こうさねつがくこうぎょう 年収", "page_count": 7, "total_clicks": 0, "total_impressions": 14, "pages": [{"url": "https://morinotakumi.com/263/", "path": "/263/", "clicks": 0, "impressions": 8, "ctr": 0, "position": 4}, {"url": "https://morinotakumi.com/263/#index_id0", "path": "/263/#index_id0", "clicks": 0, "impressions": 1, "ctr": 0, "position": 12}, {"url": "https://morinotakumi.com/263/#index_id12", "path": "/263/#index_id12", "clicks": 0, "impressions": 1, "ctr": 0, "position": 12}, {"url": "https://morinotakumi.com/263/#index_id15", "path": "/263/#index_id15", "clicks": 0, "impressions": 1, "ctr": 0, "position": 12}, {"url": "https://morinotakumi.com/263/#index_id17", "path": "/263/#index_id17", "clicks": 0, "impressions": 1, "ctr": 0, "position": 12}, {"url": "https://morinotakumi.com/263/#index_id4", "path": "/263/#index_id4", "clicks": 0, "impressions": 1, "ctr": 0, "position": 12}, {"url": "https://morinotakumi.com/263/#index_id8", "path": "/263/#index_id8", "clicks": 0, "impressions": 1, "ctr": 0, "position": 12}]}, {"keyword": "きんでん 基本給", "page_count": 2, "total_clicks": 0, "total_impressions": 9, "pages": [{"url": "https://morinotakumi.com/73/", "path": "/73/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 8, "ctr": 0, "position": 2.2}]}, {"keyword": "きんでん株価", "page_count": 2, "total_clicks": 1, "total_impressions": 7, "pages": [{"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 1, "impressions": 6, "ctr": 16.67, "position": 3.5}, {"url": "https://morinotakumi.com/73/", "path": "/73/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 4}]}, {"keyword": "きんでん 入社難易度", "page_count": 6, "total_clicks": 0, "total_impressions": 7, "pages": [{"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 2, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/104/#index_id0", "path": "/104/#index_id0", "clicks": 0, "impressions": 1, "ctr": 0, "position": 4}, {"url": "https://morinotakumi.com/104/#index_id10", "path": "/104/#index_id10", "clicks": 0, "impressions": 1, "ctr": 0, "position": 4}, {"url": "https://morinotakumi.com/104/#index_id14", "path": "/104/#index_id14", "clicks": 0, "impressions": 1, "ctr": 0, "position": 4}, {"url": "https://morinotakumi.com/104/#index_id3", "path": "/104/#index_id3", "clicks": 0, "impressions": 1, "ctr": 0, "position": 4}, {"url": "https://morinotakumi.com/104/#index_id7", "path": "/104/#index_id7", "clicks": 0, "impressions": 1, "ctr": 0, "position": 4}]}, {"keyword": "きんでん 資格手当", "page_count": 6, "total_clicks": 0, "total_impressions": 6, "pages": [{"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 7}, {"url": "https://morinotakumi.com/104/#index_id0", "path": "/104/#index_id0", "clicks": 0, "impressions": 1, "ctr": 0, "position": 7}, {"url": "https://morinotakumi.com/104/#index_id10", "path": "/104/#index_id10", "clicks": 0, "impressions": 1, "ctr": 0, "position": 7}, {"url": "https://morinotakumi.com/104/#index_id14", "path": "/104/#index_id14", "clicks": 0, "impressions": 1, "ctr": 0, "position": 7}, {"url": "https://morinotakumi.com/104/#index_id3", "path": "/104/#index_id3", "clicks": 0, "impressions": 1, "ctr": 0, "position": 7}, {"url": "https://morinotakumi.com/104/#index_id7", "path": "/104/#index_id7", "clicks": 0, "impressions": 1, "ctr": 0, "position": 7}]}, {"keyword": "インフロニア", "page_count": 2, "total_clicks": 0, "total_impressions": 5, "pages": [{"url": "https://morinotakumi.com/102/", "path": "/102/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 4}, {"url": "https://morinotakumi.com/136/", "path": "/136/", "clicks": 0, "impressions": 4, "ctr": 0, "position": 6}]}, {"keyword": "1級建築施工管理技士", "page_count": 2, "total_clicks": 0, "total_impressions": 4, "pages": [{"url": "https://morinotakumi.com/577/", "path": "/577/", "clicks": 0, "impressions": 3, "ctr": 0, "position": 2}, {"url": "https://morinotakumi.com/467/", "path": "/467/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 10}]}, {"keyword": "クボタ 給料", "page_count": 2, "total_clicks": 0, "total_impressions": 4, "pages": [{"url": "https://morinotakumi.com/325/", "path": "/325/", "clicks": 0, "impressions": 3, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/327/", "path": "/327/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 1}]}, {"keyword": "tyo 1802", "page_count": 2, "total_clicks": 0, "total_impressions": 3, "pages": [{"url": "https://morinotakumi.com/85/", "path": "/85/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 2}, {"url": "https://morinotakumi.com/43/", "path": "/43/", "clicks": 0, "impressions": 2, "ctr": 0, "position": 3.5}]}, {"keyword": "tyo: 1802", "page_count": 2, "total_clicks": 0, "total_impressions": 3, "pages": [{"url": "https://morinotakumi.com/85/", "path": "/85/", "clicks": 0, "impressions": 2, "ctr": 0, "position": 2}, {"url": "https://morinotakumi.com/43/", "path": "/43/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 3}]}, {"keyword": "きんでん 会社", "page_count": 2, "total_clicks": 0, "total_impressions": 3, "pages": [{"url": "https://morinotakumi.com/73/", "path": "/73/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 2, "ctr": 0, "position": 1.5}]}, {"keyword": "きんでん 何 の 会社", "page_count": 2, "total_clicks": 0, "total_impressions": 3, "pages": [{"url": "https://morinotakumi.com/73/", "path": "/73/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 2, "ctr": 0, "position": 2}]}, {"keyword": "きんでん本社", "page_count": 2, "total_clicks": 0, "total_impressions": 3, "pages": [{"url": "https://morinotakumi.com/73/", "path": "/73/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 2, "ctr": 0, "position": 3}]}, {"keyword": "エクシオテック", "page_count": 2, "total_clicks": 0, "total_impressions": 3, "pages": [{"url": "https://morinotakumi.com/", "path": "/", "clicks": 0, "impressions": 2, "ctr": 0, "position": 2}, {"url": "https://morinotakumi.com/144/", "path": "/144/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 2}]}, {"keyword": "6330 株価", "page_count": 2, "total_clicks": 0, "total_impressions": 2, "pages": [{"url": "https://morinotakumi.com/", "path": "/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 5}, {"url": "https://morinotakumi.com/298/", "path": "/298/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 5}]}, {"keyword": "jr東日本建築設計 年収", "page_count": 2, "total_clicks": 0, "total_impressions": 2, "pages": [{"url": "https://morinotakumi.com/320/", "path": "/320/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/577/", "path": "/577/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 3}]}, {"keyword": "jt 年収", "page_count": 2, "total_clicks": 0, "total_impressions": 2, "pages": [{"url": "https://morinotakumi.com/302/", "path": "/302/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/327/", "path": "/327/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 1}]}, {"keyword": "あさぬまぐみ", "page_count": 2, "total_clicks": 0, "total_impressions": 2, "pages": [{"url": "https://morinotakumi.com/300/", "path": "/300/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 2}, {"url": "https://morinotakumi.com/311/", "path": "/311/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 2}]}, {"keyword": "きんでん 住宅手当", "page_count": 2, "total_clicks": 0, "total_impressions": 2, "pages": [{"url": "https://morinotakumi.com/73/", "path": "/73/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 12}]}, {"keyword": "きんでん 株価 上昇 理由", "page_count": 2, "total_clicks": 0, "total_impressions": 2, "pages": [{"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 5}, {"url": "https://morinotakumi.com/73/", "path": "/73/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 5}]}, {"keyword": "きんでん 関電工 違い", "page_count": 2, "total_clicks": 0, "total_impressions": 2, "pages": [{"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/73/", "path": "/73/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 1}]}, {"keyword": "きんでんサービス", "page_count": 2, "total_clicks": 0, "total_impressions": 2, "pages": [{"url": "https://morinotakumi.com/73/", "path": "/73/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 4}]}, {"keyword": "エクシオデジタルソリューションズ", "page_count": 2, "total_clicks": 0, "total_impressions": 2, "pages": [{"url": "https://morinotakumi.com/144/", "path": "/144/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 2}, {"url": "https://morinotakumi.com/", "path": "/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 4}]}, {"keyword": "カゴメ 年収", "page_count": 2, "total_clicks": 0, "total_impressions": 2, "pages": [{"url": "https://morinotakumi.com/253/", "path": "/253/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/327/", "path": "/327/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 1}]}, {"keyword": "クボタ給料", "page_count": 2, "total_clicks": 0, "total_impressions": 2, "pages": [{"url": "https://morinotakumi.com/325/", "path": "/325/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 1}, {"url": "https://morinotakumi.com/327/", "path": "/327/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 1}]}]}, "page2_keywords": {"period": "2026-02-13 〜 2026-03-12", "rows": [{"keyword": "奥村組 年収", "url": "https://morinotakumi.com/292/", "path": "/292/", "clicks": 2, "impressions": 287, "ctr": 0.7, "position": 13.4}, {"keyword": "戸田建設 年収", "url": "https://morinotakumi.com/149/", "path": "/149/", "clicks": 2, "impressions": 269, "ctr": 0.74, "position": 13.8}, {"keyword": "五洋建設 ボーナス", "url": "https://morinotakumi.com/138/", "path": "/138/", "clicks": 6, "impressions": 242, "ctr": 2.48, "position": 12.4}, {"keyword": "ショーボンド建設 年収", "url": "https://morinotakumi.com/302/", "path": "/302/", "clicks": 2, "impressions": 153, "ctr": 1.31, "position": 11.9}, {"keyword": "きんでん 年収", "url": "https://morinotakumi.com/104/#index_id10", "path": "/104/#index_id10", "clicks": 0, "impressions": 116, "ctr": 0, "position": 12.3}, {"keyword": "きんでん 年収", "url": "https://morinotakumi.com/104/#index_id3", "path": "/104/#index_id3", "clicks": 0, "impressions": 116, "ctr": 0, "position": 12.3}, {"keyword": "きんでん 年収", "url": "https://morinotakumi.com/104/#index_id0", "path": "/104/#index_id0", "clicks": 0, "impressions": 102, "ctr": 0, "position": 12.4}, {"keyword": "きんでん 年収", "url": "https://morinotakumi.com/104/#index_id14", "path": "/104/#index_id14", "clicks": 0, "impressions": 102, "ctr": 0, "position": 12.4}, {"keyword": "きんでん 年収", "url": "https://morinotakumi.com/104/#index_id7", "path": "/104/#index_id7", "clicks": 0, "impressions": 102, "ctr": 0, "position": 12.4}, {"keyword": "イチケン ゼネコン ランキング", "url": "https://morinotakumi.com/343/", "path": "/343/", "clicks": 0, "impressions": 78, "ctr": 0, "position": 11.8}, {"keyword": "大林組 転職", "url": "https://morinotakumi.com/114/", "path": "/114/", "clicks": 1, "impressions": 39, "ctr": 2.56, "position": 14.6}, {"keyword": "きんでん平均年収", "url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 28, "ctr": 0, "position": 11.8}, {"keyword": "きんでん 福利厚生", "url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 17, "ctr": 0, "position": 16.7}, {"keyword": "高砂熱学工業 住宅手当", "url": "https://morinotakumi.com/263/", "path": "/263/", "clicks": 1, "impressions": 16, "ctr": 6.25, "position": 11.9}, {"keyword": "イチケン 初任給", "url": "https://morinotakumi.com/343/", "path": "/343/", "clicks": 0, "impressions": 13, "ctr": 0, "position": 11.9}, {"keyword": "きんでん 役員 年収", "url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 12, "ctr": 0, "position": 11.7}, {"keyword": "ショー ボンド 建設 激務", "url": "https://morinotakumi.com/302/", "path": "/302/", "clicks": 1, "impressions": 11, "ctr": 9.09, "position": 15.6}, {"keyword": "住友林業 最終面接", "url": "https://morinotakumi.com/94/", "path": "/94/", "clicks": 1, "impressions": 11, "ctr": 9.09, "position": 19.4}, {"keyword": "日揮 最終面接", "url": "https://morinotakumi.com/100/", "path": "/100/", "clicks": 2, "impressions": 9, "ctr": 22.22, "position": 11.4}, {"keyword": "大和ハウス 内定 すごい", "url": "https://morinotakumi.com/128/", "path": "/128/", "clicks": 1, "impressions": 9, "ctr": 11.11, "position": 15.8}, {"keyword": "きんでん年収", "url": "https://morinotakumi.com/104/#index_id10", "path": "/104/#index_id10", "clicks": 0, "impressions": 8, "ctr": 0, "position": 12.5}, {"keyword": "きんでん年収", "url": "https://morinotakumi.com/104/#index_id3", "path": "/104/#index_id3", "clicks": 0, "impressions": 8, "ctr": 0, "position": 12.5}, {"keyword": "イチケン ゼネコン ランキング", "url": "https://morinotakumi.com/343/#index_id10", "path": "/343/#index_id10", "clicks": 0, "impressions": 8, "ctr": 0, "position": 11.8}, {"keyword": "イチケン ゼネコン ランキング", "url": "https://morinotakumi.com/343/#index_id17", "path": "/343/#index_id17", "clicks": 0, "impressions": 8, "ctr": 0, "position": 11.8}, {"keyword": "きんでん年収", "url": "https://morinotakumi.com/104/#index_id0", "path": "/104/#index_id0", "clicks": 0, "impressions": 7, "ctr": 0, "position": 12.6}, {"keyword": "きんでん年収", "url": "https://morinotakumi.com/104/#index_id14", "path": "/104/#index_id14", "clicks": 0, "impressions": 7, "ctr": 0, "position": 12.6}, {"keyword": "きんでん年収", "url": "https://morinotakumi.com/104/#index_id7", "path": "/104/#index_id7", "clicks": 0, "impressions": 7, "ctr": 0, "position": 12.6}, {"keyword": "イチケン ゼネコン ランキング", "url": "https://morinotakumi.com/343/#index_id0", "path": "/343/#index_id0", "clicks": 0, "impressions": 7, "ctr": 0, "position": 11.7}, {"keyword": "イチケン ゼネコン ランキング", "url": "https://morinotakumi.com/343/#index_id14", "path": "/343/#index_id14", "clicks": 0, "impressions": 7, "ctr": 0, "position": 11.7}, {"keyword": "イチケン ゼネコン ランキング", "url": "https://morinotakumi.com/343/#index_id3", "path": "/343/#index_id3", "clicks": 0, "impressions": 7, "ctr": 0, "position": 11.7}, {"keyword": "イチケン ゼネコン ランキング", "url": "https://morinotakumi.com/343/#index_id7", "path": "/343/#index_id7", "clicks": 0, "impressions": 7, "ctr": 0, "position": 11.7}, {"keyword": "エクシオ 平均年収", "url": "https://morinotakumi.com/144/", "path": "/144/", "clicks": 0, "impressions": 7, "ctr": 0, "position": 13}, {"keyword": "エクシオグループ 退職金", "url": "https://morinotakumi.com/144/", "path": "/144/", "clicks": 0, "impressions": 7, "ctr": 0, "position": 15.3}, {"keyword": "はっせっこう 年収", "url": "https://morinotakumi.com/66/", "path": "/66/", "clicks": 0, "impressions": 6, "ctr": 0, "position": 11}, {"keyword": "大和ハウス 離職率", "url": "https://morinotakumi.com/128/", "path": "/128/", "clicks": 1, "impressions": 4, "ctr": 25.0, "position": 11.8}, {"keyword": "日本国土開発 採用大学", "url": "https://morinotakumi.com/329/", "path": "/329/", "clicks": 1, "impressions": 3, "ctr": 33.33, "position": 12.7}, {"keyword": "きんでん 年収 課長", "url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 3, "ctr": 0, "position": 13}, {"keyword": "きんでん 技術職", "url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 3, "ctr": 0, "position": 14}, {"keyword": "たいせいけんせつ 年収", "url": "https://morinotakumi.com/56/", "path": "/56/", "clicks": 0, "impressions": 3, "ctr": 0, "position": 12.3}, {"keyword": "イチケン youtube 年収", "url": "https://morinotakumi.com/343/", "path": "/343/", "clicks": 0, "impressions": 3, "ctr": 0, "position": 11.3}, {"keyword": "東建コーポレーション 大手", "url": "https://morinotakumi.com/283/", "path": "/283/", "clicks": 1, "impressions": 2, "ctr": 50.0, "position": 11}, {"keyword": "エクシオグループ ボーナス", "url": "https://morinotakumi.com/144/", "path": "/144/", "clicks": 0, "impressions": 2, "ctr": 0, "position": 12}, {"keyword": "住友林業 営業 最悪", "url": "https://morinotakumi.com/124/", "path": "/124/", "clicks": 1, "impressions": 1, "ctr": 100, "position": 13}, {"keyword": "大和ハウス 中途採用 難易度", "url": "https://morinotakumi.com/60/", "path": "/60/", "clicks": 1, "impressions": 1, "ctr": 100, "position": 13}, {"keyword": "大和リビング きつい", "url": "https://morinotakumi.com/128/", "path": "/128/", "clicks": 1, "impressions": 1, "ctr": 100, "position": 13}, {"keyword": "戸田建設 課長 年収", "url": "https://morinotakumi.com/149/", "path": "/149/", "clicks": 1, "impressions": 1, "ctr": 100, "position": 20}, {"keyword": "tyo: 1944", "url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 15}, {"keyword": "tyo: 1969", "url": "https://morinotakumi.com/263/", "path": "/263/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 15}, {"keyword": "きんでん 住宅手当", "url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 12}, {"keyword": "きんでん 採用 大学", "url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 12}, {"keyword": "きんでん 施工管理 年収", "url": "https://morinotakumi.com/104/#index_id0", "path": "/104/#index_id0", "clicks": 0, "impressions": 1, "ctr": 0, "position": 12}, {"keyword": "きんでん 施工管理 年収", "url": "https://morinotakumi.com/104/#index_id10", "path": "/104/#index_id10", "clicks": 0, "impressions": 1, "ctr": 0, "position": 12}, {"keyword": "きんでん 施工管理 年収", "url": "https://morinotakumi.com/104/#index_id14", "path": "/104/#index_id14", "clicks": 0, "impressions": 1, "ctr": 0, "position": 12}, {"keyword": "きんでん 施工管理 年収", "url": "https://morinotakumi.com/104/#index_id3", "path": "/104/#index_id3", "clicks": 0, "impressions": 1, "ctr": 0, "position": 12}, {"keyword": "きんでん 施工管理 年収", "url": "https://morinotakumi.com/104/#index_id7", "path": "/104/#index_id7", "clicks": 0, "impressions": 1, "ctr": 0, "position": 12}, {"keyword": "きんでん東京本社", "url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 14}, {"keyword": "こうさねつがくこうぎょう 年収", "url": "https://morinotakumi.com/263/#index_id0", "path": "/263/#index_id0", "clicks": 0, "impressions": 1, "ctr": 0, "position": 12}, {"keyword": "こうさねつがくこうぎょう 年収", "url": "https://morinotakumi.com/263/#index_id12", "path": "/263/#index_id12", "clicks": 0, "impressions": 1, "ctr": 0, "position": 12}, {"keyword": "こうさねつがくこうぎょう 年収", "url": "https://morinotakumi.com/263/#index_id15", "path": "/263/#index_id15", "clicks": 0, "impressions": 1, "ctr": 0, "position": 12}, {"keyword": "こうさねつがくこうぎょう 年収", "url": "https://morinotakumi.com/263/#index_id17", "path": "/263/#index_id17", "clicks": 0, "impressions": 1, "ctr": 0, "position": 12}, {"keyword": "こうさねつがくこうぎょう 年収", "url": "https://morinotakumi.com/263/#index_id4", "path": "/263/#index_id4", "clicks": 0, "impressions": 1, "ctr": 0, "position": 12}, {"keyword": "こうさねつがくこうぎょう 年収", "url": "https://morinotakumi.com/263/#index_id8", "path": "/263/#index_id8", "clicks": 0, "impressions": 1, "ctr": 0, "position": 12}, {"keyword": "たかさねつがく 年収", "url": "https://morinotakumi.com/263/", "path": "/263/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 13}, {"keyword": "にっき 年収", "url": "https://morinotakumi.com/69/", "path": "/69/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 12}, {"keyword": "アーバンネット札幌リンクタワー 施工不良", "url": "https://morinotakumi.com/56/", "path": "/56/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 13}, {"keyword": "ウッド アート スタジオ 破産", "url": "https://morinotakumi.com/", "path": "/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 14}, {"keyword": "エクシオグループ 中途採用", "url": "https://morinotakumi.com/144/", "path": "/144/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 11}, {"keyword": "エプスタイン文書 隈研吾", "url": "https://morinotakumi.com/577/", "path": "/577/", "clicks": 0, "impressions": 1, "ctr": 0, "position": 13}]}, "internal_links": {"crawled_pages": 24, "rows": [{"url": "https://morinotakumi.com/", "path": "/", "outgoing": 23, "incoming": 23}, {"url": "https://morinotakumi.com/104/", "path": "/104", "outgoing": 65, "incoming": 23}, {"url": "https://morinotakumi.com/71/", "path": "/71", "outgoing": 65, "incoming": 23}, {"url": "https://morinotakumi.com/50/", "path": "/50", "outgoing": 64, "incoming": 23}, {"url": "https://morinotakumi.com/56/", "path": "/56", "outgoing": 65, "incoming": 23}, {"url": "https://morinotakumi.com/83/", "path": "/83", "outgoing": 65, "incoming": 23}, {"url": "https://morinotakumi.com/153/", "path": "/153", "outgoing": 63, "incoming": 23}, {"url": "https://morinotakumi.com/142/", "path": "/142", "outgoing": 64, "incoming": 23}, {"url": "https://morinotakumi.com/89/", "path": "/89", "outgoing": 64, "incoming": 23}, {"url": "https://morinotakumi.com/85/", "path": "/85", "outgoing": 64, "incoming": 23}, {"url": "https://morinotakumi.com/151/", "path": "/151", "outgoing": 63, "incoming": 23}, {"url": "https://morinotakumi.com/594/", "path": "/594", "outgoing": 72, "incoming": 9}, {"url": "https://morinotakumi.com/623/", "path": "/623", "outgoing": 71, "incoming": 8}, {"url": "https://morinotakumi.com/619/", "path": "/619", "outgoing": 71, "incoming": 8}, {"url": "https://morinotakumi.com/617/", "path": "/617", "outgoing": 71, "incoming": 8}, {"url": "https://morinotakumi.com/615/", "path": "/615", "outgoing": 71, "incoming": 8}, {"url": "https://morinotakumi.com/611/", "path": "/611", "outgoing": 71, "incoming": 8}, {"url": "https://morinotakumi.com/605/", "path": "/605", "outgoing": 71, "incoming": 8}, {"url": "https://morinotakumi.com/608/", "path": "/608", "outgoing": 71, "incoming": 8}, {"url": "https://morinotakumi.com/587/", "path": "/587", "outgoing": 65, "incoming": 3}, {"url": "https://morinotakumi.com/page/9/", "path": "/page/9", "outgoing": 18, "incoming": 3}, {"url": "https://morinotakumi.com/585/", "path": "/585", "outgoing": 65, "incoming": 2}, {"url": "https://morinotakumi.com/page/2/", "path": "/page/2", "outgoing": 24, "incoming": 2}, {"url": "https://morinotakumi.com/page/3/", "path": "/page/3", "outgoing": 25, "incoming": 2}]}, "fetched_at": "2026-03-15 14:56:27"};
 
-// ─────────────────────────────────────────
-// 初期化
-// ─────────────────────────────────────────
+// ─── 初期化 ──────────────────────────────────────────────
 (function () {
   const data = DASHBOARD_DATA;
   if (!data) {
-    document.getElementById("loading").innerHTML =
-      '<div style="color:#c00">⚠️ データが埋め込まれていません。<br>' +
+    document.getElementById('loading').innerHTML =
+      '<div style="color:#c00;padding:40px">⚠️ データが埋め込まれていません。<br>' +
       '先に <code>python3 fetch_dashboard_data.py</code> を実行してください。</div>';
     return;
   }
+  const ts = data.fetched_at || '不明';
+  document.getElementById('header-updated').textContent = `最終更新：${ts}`;
+  document.getElementById('footer').textContent = `最終更新：${ts}　／　morinotakumi.com SEO Dashboard`;
 
-  document.getElementById("fetched-at").textContent =
-    `最終更新：${data.fetched_at || "不明"}`;
+  renderSummary(data.ga4||{}, data.sc_keywords||{}, data.sc_pages||{});
+  renderTab1(data.ga4||{});
+  renderTab2(data.sc_keywords||{});
+  renderTab3(data.sc_pages||{});
+  renderTab4(data.sc_pages_index||{});
+  renderTab5(data.cannibalization||{});
+  renderTab6(data.page2_keywords||{});
+  renderTab7(data.internal_links||{});
 
-  renderSummary(data.ga4 || {});
-  renderTab1(data.ga4 || {});
-  renderTab2(data.sc_keywords || {});
-  renderTab3(data.sc_pages || {});
-  renderTab4(data.sc_pages_index || {});
-  renderTab5(data.cannibalization || {});
-  renderTab6(data.page2_keywords || {});
-  renderTab7(data.internal_links || {});
-
-  document.getElementById("loading").style.display = "none";
-  document.getElementById("dashboard").style.display = "block";
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
 })();
 </script>
 </body>
