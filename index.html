@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEOダッシュボード | morinotakumi.com</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+      color: #1a1a1a;
+      background: #f5f5f5;
+      line-height: 1.5;
+    }
+
+    /* ── ヘッダー ── */
+    .header {
+      background: #fff;
+      border-bottom: 2px solid #e0e0e0;
+      padding: 16px 24px;
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+    }
+    .header h1 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+    .header .site-url {
+      font-size: 13px;
+      color: #666;
+    }
+    .header .fetched-at {
+      margin-left: auto;
+      font-size: 12px;
+      color: #999;
+    }
+
+    /* ── サマリーカード ── */
+    .summary-bar {
+      background: #fff;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 16px 24px;
+      display: flex;
+      gap: 32px;
+    }
+    .summary-card {
+      text-align: center;
+    }
+    .summary-card .label {
+      font-size: 11px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .summary-card .value {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1a1a1a;
+      line-height: 1.2;
+    }
+    .summary-card .sub {
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    /* ── タブ ── */
+    .tabs {
+      background: #fff;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 0 24px;
+      display: flex;
+      gap: 0;
+    }
+    .tab-btn {
+      padding: 12px 20px;
+      border: none;
+      background: transparent;
+      font-size: 13px;
+      font-weight: 500;
+      color: #666;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -1px;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .tab-btn:hover { color: #333; }
+    .tab-btn.active {
+      color: #0066cc;
+      border-bottom-color: #0066cc;
+    }
+
+    /* ── コンテンツ ── */
+    .content {
+      padding: 24px;
+      max-width: 1200px;
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── セクションタイトル ── */
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #555;
+      margin-bottom: 12px;
+    }
+    .period-note {
+      font-size: 12px;
+      color: #999;
+      margin-bottom: 12px;
+    }
+
+    /* ── テーブル共通 ── */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .data-table thead th {
+      background: #f8f8f8;
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 600;
+      color: #555;
+      border-bottom: 1px solid #e0e0e0;
+      white-space: nowrap;
+    }
+    .data-table thead th.num { text-align: right; }
+    .data-table tbody tr:hover { background: #fafafa; }
+    .data-table tbody td {
+      padding: 8px 14px;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 13px;
+      color: #1a1a1a;
+    }
+    .data-table tbody tr:last-child td { border-bottom: none; }
+    .data-table tbody td.num {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      color: #333;
+    }
+    .data-table tbody td.rank {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+    .rank-good  { color: #2e7d32; font-weight: 600; }
+    .rank-mid   { color: #f57c00; font-weight: 600; }
+    .rank-low   { color: #999; }
+
+    /* ── デイリーテーブル ── */
+    .daily-wrap {
+      max-height: 480px;
+      overflow-y: auto;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+    }
+    .daily-wrap .data-table { border: none; }
+
+    /* ── URL列 ── */
+    .url-cell {
+      max-width: 420px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .url-cell a {
+      color: #0066cc;
+      text-decoration: none;
+    }
+    .url-cell a:hover { text-decoration: underline; }
+
+    /* ── エラー表示 ── */
+    .error-box {
+      background: #fff3f3;
+      border: 1px solid #ffcccc;
+      border-radius: 6px;
+      padding: 16px;
+      color: #c00;
+      font-size: 13px;
+    }
+
+    /* ── ローディング ── */
+    #loading {
+      padding: 60px 24px;
+      text-align: center;
+      color: #888;
+      font-size: 15px;
+    }
+    #dashboard { display: none; }
+
+    /* ── ランク色バー ── */
+    .bar-wrap {
+      display: inline-block;
+      width: 60px;
+      height: 6px;
+      background: #e0e0e0;
+      border-radius: 3px;
+      vertical-align: middle;
+      margin-left: 6px;
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      background: #0066cc;
+    }
+  </style>
+</head>
+<body>
+
+<div id="loading">データを読み込み中...</div>
+
+<div id="dashboard">
+  <div class="header">
+    <h1>SEOダッシュボード</h1>
+    <span class="site-url">morinotakumi.com</span>
+    <span class="fetched-at" id="fetched-at"></span>
+  </div>
+
+  <div class="summary-bar" id="summary-bar"></div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('tab1', this)">① 流入・セッション（GA4）</button>
+    <button class="tab-btn" onclick="switchTab('tab2', this)">② 検索キーワード（SC）</button>
+    <button class="tab-btn" onclick="switchTab('tab3', this)">③ 記事別パフォーマンス（SC）</button>
+  </div>
+
+  <div class="content">
+    <!-- TAB 1 -->
+    <div class="tab-panel active" id="tab1">
+      <div id="tab1-content"></div>
+    </div>
+
+    <!-- TAB 2 -->
+    <div class="tab-panel" id="tab2">
+      <div id="tab2-content"></div>
+    </div>
+
+    <!-- TAB 3 -->
+    <div class="tab-panel" id="tab3">
+      <div id="tab3-content"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────
+// ユーティリティ
+// ─────────────────────────────────────────
+function fmt(n) {
+  return Number(n).toLocaleString("ja-JP");
+}
+function rankClass(pos) {
+  if (pos <= 10) return "rank-good";
+  if (pos <= 20) return "rank-mid";
+  return "rank-low";
+}
+
+// ─────────────────────────────────────────
+// タブ切替
+// ─────────────────────────────────────────
+function switchTab(id, btn) {
+  document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  btn.classList.add("active");
+}
+
+// ─────────────────────────────────────────
+// サマリーカード
+// ─────────────────────────────────────────
+function renderSummary(ga4) {
+  const s = ga4.summary || {};
+  const bar = document.getElementById("summary-bar");
+  bar.innerHTML = `
+    <div class="summary-card">
+      <div class="label">セッション</div>
+      <div class="value">${fmt(s.sessions || 0)}</div>
+      <div class="sub">過去28日間</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">ユーザー</div>
+      <div class="value">${fmt(s.users || 0)}</div>
+      <div class="sub">過去28日間</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">ページビュー</div>
+      <div class="value">${fmt(s.pv || 0)}</div>
+      <div class="sub">過去28日間</div>
+    </div>
+  `;
+}
+
+// ─────────────────────────────────────────
+// タブ① GA4 デイリー
+// ─────────────────────────────────────────
+function renderTab1(ga4) {
+  const el = document.getElementById("tab1-content");
+  if (ga4.error) {
+    el.innerHTML = `<div class="error-box">⚠️ GA4 取得エラー：${ga4.error}</div>`;
+    return;
+  }
+  const rows = (ga4.daily || []).slice().reverse();
+  const maxPv = Math.max(...rows.map(r => r.pv), 1);
+
+  let html = `
+    <p class="period-note">期間：過去28日間 ／ 日付の新しい順</p>
+    <div class="daily-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>日付</th>
+          <th class="num">セッション</th>
+          <th class="num">ユーザー</th>
+          <th class="num">ページビュー</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+  rows.forEach(r => {
+    const barW = Math.round((r.pv / maxPv) * 60);
+    html += `
+      <tr>
+        <td>${r.date}</td>
+        <td class="num">${fmt(r.sessions)}</td>
+        <td class="num">${fmt(r.users)}</td>
+        <td class="num">
+          ${fmt(r.pv)}
+          <span class="bar-wrap"><span class="bar-fill" style="width:${barW}px"></span></span>
+        </td>
+      </tr>
+    `;
+  });
+  html += `</tbody></table></div>`;
+  el.innerHTML = html;
+}
+
+// ─────────────────────────────────────────
+// タブ② SC キーワード
+// ─────────────────────────────────────────
+function renderTab2(sc) {
+  const el = document.getElementById("tab2-content");
+  if (sc.error) {
+    el.innerHTML = `<div class="error-box">⚠️ Search Console 取得エラー：${sc.error}</div>`;
+    return;
+  }
+  let html = `
+    <p class="period-note">期間：${sc.period} ／ クリック数降順・上位50件</p>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>キーワード</th>
+          <th class="num">クリック</th>
+          <th class="num">表示回数</th>
+          <th class="num">CTR</th>
+          <th class="num">平均順位</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+  sc.rows.forEach((r, i) => {
+    html += `
+      <tr>
+        <td class="num" style="color:#aaa">${i + 1}</td>
+        <td>${escHtml(r.keyword)}</td>
+        <td class="num">${fmt(r.clicks)}</td>
+        <td class="num">${fmt(r.impressions)}</td>
+        <td class="num">${r.ctr}%</td>
+        <td class="num rank ${rankClass(r.position)}">${r.position}</td>
+      </tr>
+    `;
+  });
+  html += `</tbody></table>`;
+  el.innerHTML = html;
+}
+
+// ─────────────────────────────────────────
+// タブ③ SC ページ別
+// ─────────────────────────────────────────
+function renderTab3(sc) {
+  const el = document.getElementById("tab3-content");
+  if (sc.error) {
+    el.innerHTML = `<div class="error-box">⚠️ Search Console 取得エラー：${sc.error}</div>`;
+    return;
+  }
+  let html = `
+    <p class="period-note">期間：${sc.period} ／ クリック数降順・上位50件</p>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>URL</th>
+          <th class="num">クリック</th>
+          <th class="num">表示回数</th>
+          <th class="num">CTR</th>
+          <th class="num">平均順位</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+  sc.rows.forEach((r, i) => {
+    html += `
+      <tr>
+        <td class="num" style="color:#aaa">${i + 1}</td>
+        <td class="url-cell"><a href="${escHtml(r.url)}" target="_blank">${escHtml(r.path)}</a></td>
+        <td class="num">${fmt(r.clicks)}</td>
+        <td class="num">${fmt(r.impressions)}</td>
+        <td class="num">${r.ctr}%</td>
+        <td class="num rank ${rankClass(r.position)}">${r.position}</td>
+      </tr>
+    `;
+  });
+  html += `</tbody></table>`;
+  el.innerHTML = html;
+}
+
+// ─────────────────────────────────────────
+// XSS対策
+// ─────────────────────────────────────────
+function escHtml(s) {
+  return String(s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+// ─────────────────────────────────────────
+// 埋め込みデータ（fetch_dashboard_data.py が自動更新）
+// ─────────────────────────────────────────
+const DASHBOARD_DATA = {"ga4": {"summary": {"sessions": 1409, "users": 1363, "pv": 1594}, "daily": [{"date": "2026-02-15", "sessions": 31, "users": 29, "pv": 42}, {"date": "2026-02-16", "sessions": 60, "users": 58, "pv": 85}, {"date": "2026-02-17", "sessions": 47, "users": 44, "pv": 50}, {"date": "2026-02-18", "sessions": 45, "users": 45, "pv": 47}, {"date": "2026-02-19", "sessions": 45, "users": 42, "pv": 57}, {"date": "2026-02-20", "sessions": 50, "users": 50, "pv": 63}, {"date": "2026-02-21", "sessions": 35, "users": 35, "pv": 38}, {"date": "2026-02-22", "sessions": 40, "users": 38, "pv": 45}, {"date": "2026-02-23", "sessions": 36, "users": 34, "pv": 36}, {"date": "2026-02-24", "sessions": 40, "users": 40, "pv": 56}, {"date": "2026-02-25", "sessions": 58, "users": 55, "pv": 58}, {"date": "2026-02-26", "sessions": 46, "users": 45, "pv": 51}, {"date": "2026-02-27", "sessions": 50, "users": 47, "pv": 50}, {"date": "2026-02-28", "sessions": 51, "users": 50, "pv": 51}, {"date": "2026-03-01", "sessions": 67, "users": 66, "pv": 75}, {"date": "2026-03-02", "sessions": 77, "users": 76, "pv": 77}, {"date": "2026-03-03", "sessions": 51, "users": 50, "pv": 62}, {"date": "2026-03-04", "sessions": 47, "users": 44, "pv": 52}, {"date": "2026-03-05", "sessions": 49, "users": 48, "pv": 61}, {"date": "2026-03-06", "sessions": 31, "users": 29, "pv": 41}, {"date": "2026-03-07", "sessions": 91, "users": 86, "pv": 97}, {"date": "2026-03-08", "sessions": 54, "users": 52, "pv": 62}, {"date": "2026-03-09", "sessions": 45, "users": 45, "pv": 45}, {"date": "2026-03-10", "sessions": 77, "users": 74, "pv": 89}, {"date": "2026-03-11", "sessions": 52, "users": 49, "pv": 54}, {"date": "2026-03-12", "sessions": 43, "users": 43, "pv": 45}, {"date": "2026-03-13", "sessions": 36, "users": 36, "pv": 44}, {"date": "2026-03-14", "sessions": 47, "users": 45, "pv": 51}, {"date": "2026-03-15", "sessions": 8, "users": 8, "pv": 10}]}, "sc_keywords": {"period": "2026-02-13 〜 2026-03-12", "rows": [{"keyword": "きんでん 就職難易度", "clicks": 14, "impressions": 270, "ctr": 5.19, "position": 1.6}, {"keyword": "きんでん 年収", "clicks": 12, "impressions": 2061, "ctr": 0.58, "position": 6.5}, {"keyword": "大林組 最悪", "clicks": 8, "impressions": 539, "ctr": 1.48, "position": 3.2}, {"keyword": "前田建設 年収", "clicks": 7, "impressions": 495, "ctr": 1.41, "position": 1.4}, {"keyword": "前田建設工業 年収", "clicks": 7, "impressions": 487, "ctr": 1.44, "position": 1.8}, {"keyword": "五洋建設 ボーナス", "clicks": 6, "impressions": 242, "ctr": 2.48, "position": 12.4}, {"keyword": "住友林業 内定 すごい", "clicks": 6, "impressions": 392, "ctr": 1.53, "position": 2.2}, {"keyword": "住友林業 就職難易度", "clicks": 6, "impressions": 694, "ctr": 0.86, "position": 4.0}, {"keyword": "大 本 組 ゼネコン ランキング", "clicks": 6, "impressions": 114, "ctr": 5.26, "position": 2.9}, {"keyword": "きんでん就職難易度", "clicks": 4, "impressions": 38, "ctr": 10.53, "position": 1}, {"keyword": "清水建設 初任給", "clicks": 4, "impressions": 507, "ctr": 0.79, "position": 6.2}, {"keyword": "清水建設 年収", "clicks": 4, "impressions": 3873, "ctr": 0.1, "position": 6.2}, {"keyword": "きんでん 離職率", "clicks": 3, "impressions": 108, "ctr": 2.78, "position": 1.2}, {"keyword": "インフ ロニア ホールディングス 就職 難易度", "clicks": 3, "impressions": 30, "ctr": 10.0, "position": 1.9}, {"keyword": "インフロニア 年収", "clicks": 3, "impressions": 58, "ctr": 5.17, "position": 2.1}, {"keyword": "住友林業 営業 きつい", "clicks": 3, "impressions": 164, "ctr": 1.83, "position": 6.2}, {"keyword": "前田建設工業 就職難易度", "clicks": 3, "impressions": 84, "ctr": 3.57, "position": 7.5}, {"keyword": "大和ハウス 施工管理 激務", "clicks": 3, "impressions": 45, "ctr": 6.67, "position": 6.9}, {"keyword": "大林組 最終 落ちる", "clicks": 3, "impressions": 22, "ctr": 13.64, "position": 1.9}, {"keyword": "新日本建設 年収", "clicks": 3, "impressions": 267, "ctr": 1.12, "position": 2.6}, {"keyword": "松井建設 就職難易度", "clicks": 3, "impressions": 50, "ctr": 6.0, "position": 4.5}, {"keyword": "清水建設 就職 すごい", "clicks": 3, "impressions": 63, "ctr": 4.76, "position": 1.1}, {"keyword": "清水建設 福利厚生", "clicks": 3, "impressions": 158, "ctr": 1.9, "position": 7.5}, {"keyword": "矢作建設工業 年収", "clicks": 3, "impressions": 260, "ctr": 1.15, "position": 6.2}, {"keyword": "きんでん やばい", "clicks": 2, "impressions": 759, "ctr": 0.26, "position": 2.3}, {"keyword": "きんでん 年収 大卒", "clicks": 2, "impressions": 48, "ctr": 4.17, "position": 2.5}, {"keyword": "きんでん 高卒 難易度", "clicks": 2, "impressions": 27, "ctr": 7.41, "position": 1.2}, {"keyword": "ショーボンド建設 年収", "clicks": 2, "impressions": 153, "ctr": 1.31, "position": 11.9}, {"keyword": "九 電工 年収", "clicks": 2, "impressions": 252, "ctr": 0.79, "position": 6.4}, {"keyword": "九電工 中途採用", "clicks": 2, "impressions": 44, "ctr": 4.55, "position": 8.3}, {"keyword": "前田建設 ボーナス", "clicks": 2, "impressions": 7, "ctr": 28.57, "position": 1}, {"keyword": "前田建設工業 福利厚生", "clicks": 2, "impressions": 30, "ctr": 6.67, "position": 4.5}, {"keyword": "千代田化工建設 年収", "clicks": 2, "impressions": 196, "ctr": 1.02, "position": 20.3}, {"keyword": "大成建設 やばい", "clicks": 2, "impressions": 2892, "ctr": 0.07, "position": 5.5}, {"keyword": "大成建設 初任給", "clicks": 2, "impressions": 669, "ctr": 0.3, "position": 8.0}, {"keyword": "大成建設 就職難易度", "clicks": 2, "impressions": 362, "ctr": 0.55, "position": 3.4}, {"keyword": "大成建設 採用人数", "clicks": 2, "impressions": 38, "ctr": 5.26, "position": 5.1}, {"keyword": "大林組 就職難易度", "clicks": 2, "impressions": 195, "ctr": 1.03, "position": 2.8}, {"keyword": "大林組 採用大学", "clicks": 2, "impressions": 196, "ctr": 1.02, "position": 2.5}, {"keyword": "大林組 退職金", "clicks": 2, "impressions": 128, "ctr": 1.56, "position": 3.2}, {"keyword": "大林組 離職率", "clicks": 2, "impressions": 60, "ctr": 3.33, "position": 1.6}, {"keyword": "大林組人事", "clicks": 2, "impressions": 4, "ctr": 50.0, "position": 8.8}, {"keyword": "奥村組 年収", "clicks": 2, "impressions": 287, "ctr": 0.7, "position": 13.4}, {"keyword": "奥村組 退職金", "clicks": 2, "impressions": 96, "ctr": 2.08, "position": 3.5}, {"keyword": "戸田建設 年収", "clicks": 2, "impressions": 273, "ctr": 0.73, "position": 13.6}, {"keyword": "新日本建設 福利厚生", "clicks": 2, "impressions": 14, "ctr": 14.29, "position": 7.5}, {"keyword": "日揮 最終面接", "clicks": 2, "impressions": 9, "ctr": 22.22, "position": 11.4}, {"keyword": "日揮 最終面接 落ちる", "clicks": 2, "impressions": 28, "ctr": 7.14, "position": 7.6}, {"keyword": "日揮 最終面接通過率", "clicks": 2, "impressions": 3, "ctr": 66.67, "position": 8.3}, {"keyword": "清水建設 就職偏差値", "clicks": 2, "impressions": 45, "ctr": 4.44, "position": 1.8}]}, "sc_pages": {"period": "2026-02-13 〜 2026-03-12", "rows": [{"url": "https://morinotakumi.com/104/", "path": "/104/", "clicks": 75, "impressions": 8675, "ctr": 0.86, "position": 5.6}, {"url": "https://morinotakumi.com/71/", "path": "/71/", "clicks": 43, "impressions": 2453, "ctr": 1.75, "position": 4.0}, {"url": "https://morinotakumi.com/114/", "path": "/114/", "clicks": 39, "impressions": 2835, "ctr": 1.38, "position": 6.8}, {"url": "https://morinotakumi.com/153/", "path": "/153/", "clicks": 33, "impressions": 3663, "ctr": 0.9, "position": 7.5}, {"url": "https://morinotakumi.com/322/", "path": "/322/", "clicks": 30, "impressions": 1621, "ctr": 1.85, "position": 4.8}, {"url": "https://morinotakumi.com/94/", "path": "/94/", "clicks": 29, "impressions": 3217, "ctr": 0.9, "position": 8.0}, {"url": "https://morinotakumi.com/50/", "path": "/50/", "clicks": 23, "impressions": 11777, "ctr": 0.2, "position": 6.5}, {"url": "https://morinotakumi.com/89/", "path": "/89/", "clicks": 21, "impressions": 2014, "ctr": 1.04, "position": 4.9}, {"url": "https://morinotakumi.com/138/", "path": "/138/", "clicks": 20, "impressions": 2631, "ctr": 0.76, "position": 9.8}, {"url": "https://morinotakumi.com/83/", "path": "/83/", "clicks": 19, "impressions": 1635, "ctr": 1.16, "position": 8.6}, {"url": "https://morinotakumi.com/92/", "path": "/92/", "clicks": 17, "impressions": 1695, "ctr": 1.0, "position": 8.0}, {"url": "https://morinotakumi.com/151/", "path": "/151/", "clicks": 15, "impressions": 2796, "ctr": 0.54, "position": 6.5}, {"url": "https://morinotakumi.com/292/", "path": "/292/", "clicks": 15, "impressions": 1655, "ctr": 0.91, "position": 8.0}, {"url": "https://morinotakumi.com/309/", "path": "/309/", "clicks": 14, "impressions": 773, "ctr": 1.81, "position": 4.4}, {"url": "https://morinotakumi.com/100/", "path": "/100/", "clicks": 13, "impressions": 285, "ctr": 4.56, "position": 11.9}, {"url": "https://morinotakumi.com/136/", "path": "/136/", "clicks": 13, "impressions": 535, "ctr": 2.43, "position": 4.1}, {"url": "https://morinotakumi.com/56/", "path": "/56/", "clicks": 13, "impressions": 6652, "ctr": 0.2, "position": 10.1}, {"url": "https://morinotakumi.com/85/", "path": "/85/", "clicks": 13, "impressions": 2037, "ctr": 0.64, "position": 6.8}, {"url": "https://morinotakumi.com/320/", "path": "/320/", "clicks": 12, "impressions": 1621, "ctr": 0.74, "position": 6.2}, {"url": "https://morinotakumi.com/120/", "path": "/120/", "clicks": 11, "impressions": 1039, "ctr": 1.06, "position": 6.3}, {"url": "https://morinotakumi.com/149/", "path": "/149/", "clicks": 11, "impressions": 1114, "ctr": 0.99, "position": 12.3}, {"url": "https://morinotakumi.com/327/", "path": "/327/", "clicks": 11, "impressions": 1191, "ctr": 0.92, "position": 3.4}, {"url": "https://morinotakumi.com/349/", "path": "/349/", "clicks": 11, "impressions": 441, "ctr": 2.49, "position": 6.3}, {"url": "https://morinotakumi.com/285/", "path": "/285/", "clicks": 10, "impressions": 2027, "ctr": 0.49, "position": 12.6}, {"url": "https://morinotakumi.com/339/", "path": "/339/", "clicks": 10, "impressions": 1570, "ctr": 0.64, "position": 3.7}, {"url": "https://morinotakumi.com/128/", "path": "/128/", "clicks": 9, "impressions": 1322, "ctr": 0.68, "position": 12.6}, {"url": "https://morinotakumi.com/142/", "path": "/142/", "clicks": 9, "impressions": 3970, "ctr": 0.23, "position": 8.7}, {"url": "https://morinotakumi.com/283/", "path": "/283/", "clicks": 9, "impressions": 1929, "ctr": 0.47, "position": 8.2}, {"url": "https://morinotakumi.com/329/", "path": "/329/", "clicks": 9, "impressions": 829, "ctr": 1.09, "position": 6.2}, {"url": "https://morinotakumi.com/347/", "path": "/347/", "clicks": 9, "impressions": 762, "ctr": 1.18, "position": 4.6}, {"url": "https://morinotakumi.com/108/", "path": "/108/", "clicks": 8, "impressions": 1088, "ctr": 0.74, "position": 14.3}, {"url": "https://morinotakumi.com/255/", "path": "/255/", "clicks": 8, "impressions": 2097, "ctr": 0.38, "position": 11.0}, {"url": "https://morinotakumi.com/296/", "path": "/296/", "clicks": 8, "impressions": 1667, "ctr": 0.48, "position": 6.7}, {"url": "https://morinotakumi.com/316/", "path": "/316/", "clicks": 8, "impressions": 598, "ctr": 1.34, "position": 7.3}, {"url": "https://morinotakumi.com/263/", "path": "/263/", "clicks": 7, "impressions": 3108, "ctr": 0.23, "position": 11.7}, {"url": "https://morinotakumi.com/281/", "path": "/281/", "clicks": 7, "impressions": 1156, "ctr": 0.61, "position": 9.4}, {"url": "https://morinotakumi.com/300/", "path": "/300/", "clicks": 7, "impressions": 1879, "ctr": 0.37, "position": 8.4}, {"url": "https://morinotakumi.com/302/", "path": "/302/", "clicks": 7, "impressions": 1061, "ctr": 0.66, "position": 7.8}, {"url": "https://morinotakumi.com/124/", "path": "/124/", "clicks": 6, "impressions": 1071, "ctr": 0.56, "position": 22.3}, {"url": "https://morinotakumi.com/298/", "path": "/298/", "clicks": 6, "impressions": 3366, "ctr": 0.18, "position": 8.9}, {"url": "https://morinotakumi.com/306/", "path": "/306/", "clicks": 6, "impressions": 653, "ctr": 0.92, "position": 4.3}, {"url": "https://morinotakumi.com/341/", "path": "/341/", "clicks": 6, "impressions": 756, "ctr": 0.79, "position": 4.6}, {"url": "https://morinotakumi.com/343/", "path": "/343/", "clicks": 6, "impressions": 508, "ctr": 1.18, "position": 6.5}, {"url": "https://morinotakumi.com/35/", "path": "/35/", "clicks": 6, "impressions": 4518, "ctr": 0.13, "position": 10.5}, {"url": "https://morinotakumi.com/587/", "path": "/587/", "clicks": 6, "impressions": 737, "ctr": 0.81, "position": 6.4}, {"url": "https://morinotakumi.com/98/", "path": "/98/", "clicks": 6, "impressions": 1284, "ctr": 0.47, "position": 6.3}, {"url": "https://morinotakumi.com/304/", "path": "/304/", "clicks": 5, "impressions": 1408, "ctr": 0.36, "position": 3.6}, {"url": "https://morinotakumi.com/336/", "path": "/336/", "clicks": 5, "impressions": 459, "ctr": 1.09, "position": 5.3}, {"url": "https://morinotakumi.com/102/", "path": "/102/", "clicks": 4, "impressions": 246, "ctr": 1.63, "position": 7.2}, {"url": "https://morinotakumi.com/132/", "path": "/132/", "clicks": 4, "impressions": 1183, "ctr": 0.34, "position": 16.9}]}, "fetched_at": "2026-03-15 11:41:54"};
+
+// ─────────────────────────────────────────
+// 初期化
+// ─────────────────────────────────────────
+(function () {
+  const data = DASHBOARD_DATA;
+  if (!data) {
+    document.getElementById("loading").innerHTML =
+      '<div style="color:#c00">⚠️ データが埋め込まれていません。<br>' +
+      '先に <code>python3 fetch_dashboard_data.py</code> を実行してください。</div>';
+    return;
+  }
+
+  document.getElementById("fetched-at").textContent =
+    `最終更新：${data.fetched_at || "不明"}`;
+
+  renderSummary(data.ga4 || {});
+  renderTab1(data.ga4 || {});
+  renderTab2(data.sc_keywords || {});
+  renderTab3(data.sc_pages || {});
+
+  document.getElementById("loading").style.display = "none";
+  document.getElementById("dashboard").style.display = "block";
+})();
+</script>
+</body>
+</html>
