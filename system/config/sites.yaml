@@ -1,0 +1,131 @@
+# 3サイト共通設定
+# rewrite_articles.py の SITES dict と互換性を持たせる
+sites:
+  codevillage:
+    name: "ハタラQuick (codevillage.jp)"
+    domain: codevillage.jp
+    url: https://codevillage.jp
+    wp_user_env: WP_USER_8
+    wp_pass_env: WP_APP_PASS_8
+    title_suffix: " | ハタラQuick"
+    seo_plugin: "SEO SIMPLE PACK"
+    register_post_meta: true   # ssp_meta_title / ssp_meta_description が REST 露出済
+    primary_categories: ["期間工", "リゾートバイト"]
+    permalink_pattern: slug    # /{slug}/
+    rewrite_recency_basis: modified   # default
+  mri-tmg:
+    name: "Consul Compas (mri-tmg.jp)"
+    domain: mri-tmg.jp
+    url: https://mri-tmg.jp
+    wp_user_env: WP_USER_2
+    wp_pass_env: WP_APP_PASS_2
+    title_suffix: " | Consul Compas"
+    seo_plugin: "SEO SIMPLE PACK"
+    register_post_meta: true
+    primary_categories: ["ファーム研究", "年収・キャリア"]
+    permalink_pattern: slug
+    rewrite_recency_basis: date   # spread_mri_dates.py で modified が改変されているため公開日(date)で判定
+  morinotakumi:
+    name: "ハコノリ (morinotakumi.com)"
+    domain: morinotakumi.com
+    url: https://morinotakumi.com
+    wp_user_env: WP_USER
+    wp_pass_env: WP_APP_PASS
+    title_suffix: " | ハコノリ"
+    seo_plugin: "SEO SIMPLE PACK"
+    register_post_meta: true    # ✅ 設置済 (2026-05-09 確認、ssp_meta_title/description が REST 露出)
+    primary_categories: ["大成建設", "大林組", "鹿島建設"]
+    permalink_pattern: post_id  # /{post_id}/
+    rewrite_recency_basis: modified   # default (spread_hakonori_dates.py 停止後は modified ベースで OK)
+
+# リライト共通基準 (extract_rewrite_targets.py 用)
+rewrite_criteria:
+  min_days_since_last_rewrite: 30
+  min_position: 6.0           # pos 6位以下のみ (上位は触らない)
+  min_imp_30d: 50
+  min_days_since_publish: 60
+  exclude_position_top: 3     # 安全弁: pos≤3 は絶対に対象から除外
+
+priority_weights:
+  oldest_modified: 0.4
+  position_decline: 0.3
+  ctr_below_expected: 0.2
+  high_imp: 0.1
+
+# モデル選択 (タスク別)
+# rewrite: コスト効率重視 → sonnet (1記事 ~$0.07)
+# cv_direct: 品質重視 (アフィ収益直結) → opus (1記事 ~$1.24)
+model_per_task:
+  rewrite: claude-sonnet-4-6
+  cv_direct: claude-opus-4-6
+  rewrite_meta_only: claude-haiku-4-5-20251001  # title/desc 提案だけならhaikuで十分
+
+# Anthropic API 価格 (USD per 1M tokens, 2026年5月時点)
+model_pricing:
+  claude-opus-4-6:
+    input: 15.0
+    output: 75.0
+  claude-sonnet-4-6:
+    input: 3.0
+    output: 15.0
+  claude-haiku-4-5-20251001:
+    input: 1.0
+    output: 5.0
+
+# CV直結記事の運用モード (orchestrator が読む)
+cv_direct:
+  daily_quota: 1            # 各サイトあたりの 1日生成数
+  parallel_mode: true       # true = 全サイト並行 / false = 全体ローテ (旧仕様)
+  # 全KW消化後の挙動: 夕シフトで CV 処理自体を skip (リライトのみ継続)
+  on_all_exhausted: skip
+
+# CV直結記事の対象 KW (priority 順)
+cv_direct_kws:
+  codevillage:
+    priority_5_may_first:
+      - "リゾバ ダイブ 評判"
+      - "リゾバ ヒューマニック 評判"
+      - "リゾバ アルファリゾート 評判"
+      - "リゾバ おすすめ サイト 比較"
+      - "リゾバ 大学生 おすすめ"
+  mri-tmg:
+    high_paying_agents:
+      myvision:
+        - "マイビジョン 評判"
+        - "マイビジョン 年収"
+        - "マイビジョン 口コミ"
+        - "マイビジョン デメリット"
+      proconnect:
+        - "プロコネクト 評判"
+        - "プロコネクト 年収"
+        - "プロコネクト 口コミ"
+      freeconsultant:
+        - "フリーコンサルタント.jp 評判"
+        - "フリーコンサルタント.jp 案件"
+        - "フリーコンサルタント.jp 単価"
+      tencube:
+        - "テンキューブ 評判"
+        - "テンキューブ ITコンサル"
+        - "テンキューブ 案件"
+      axis:
+        - "アクシスコンサルティング 評判"
+        - "アクシスコンサルティング 年収"
+      concord:
+        - "コンコードエグゼクティブグループ 評判"
+        - "コンコードエグゼクティブグループ 年収"
+      mbb_supplement:
+        - "マッキンゼー 転職エージェント"
+        - "BCG 転職エージェント"
+        - "ベイン 転職エージェント"
+  morinotakumi:
+    construction_agents:
+      - "ヒュープロ 評判"
+      - "建職バンク 評判"
+      - "施工管理求人ナビ 評判"
+      - "ビーバーズ 評判"
+      - "ヒュープロ 年収"
+      - "建職バンク 年収"
+      - "建設 1級建築士 転職エージェント"
+      - "施工管理 転職エージェント比較"
+      - "建設業 転職エージェント おすすめ"
+      - "ゼネコン 転職エージェント"
