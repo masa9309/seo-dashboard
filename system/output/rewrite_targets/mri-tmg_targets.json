@@ -1,0 +1,319 @@
+[
+  {
+    "post_id": 147,
+    "url": "https://mri-tmg.jp/deloitte-tohmatsu-extremely-demanding-work/",
+    "title": "デロイトトーマツは激務？残業時間・部門別の忙しさ・年収を社員口コミとデータで徹底解説",
+    "pos_90d": 6.509858044164038,
+    "pos_30d": 6.98794185662372,
+    "delta_pos": 0.47808381245968157,
+    "imp_90d": 7608,
+    "imp_30d": 6054,
+    "ctr_90d": 0.011566771819137749,
+    "expected_ctr": 0.03,
+    "ctr_ratio": 0.385559060637925,
+    "n_kws_imp10": 61,
+    "days_since_modified": 1,
+    "days_since_rewrite": null,
+    "primary_queries": [
+      "デロイト トーマツ 激務",
+      "デロイトトーマツ 激務",
+      "デロイト 残業時間"
+    ],
+    "categories": [
+      6,
+      9
+    ],
+    "score": 0.7553,
+    "score_breakdown": {
+      "high_imp": 1.0,
+      "ctr_below_expected": 0.614,
+      "position_decline": 0.096,
+      "kw_breadth": 1.0
+    }
+  },
+  {
+    "post_id": 111,
+    "url": "https://mri-tmg.jp/accenture-avoid-warning/",
+    "title": "アクセンチュアはやめとけ？元社員の声と公的データで検証する実態と後悔しない判断基準",
+    "pos_90d": 8.500313087038197,
+    "pos_30d": 9.031853130393849,
+    "delta_pos": 0.5315400433556512,
+    "imp_90d": 7985,
+    "imp_30d": 6373,
+    "ctr_90d": 0.00989355040701315,
+    "expected_ctr": 0.02,
+    "ctr_ratio": 0.4946775203506575,
+    "n_kws_imp10": 36,
+    "days_since_modified": 1,
+    "days_since_rewrite": null,
+    "primary_queries": [
+      "アクセンチュア やめとけ",
+      "アクセンチュア やばい",
+      "アクセンチュア エンジニア やめとけ"
+    ],
+    "categories": [
+      9
+    ],
+    "score": 0.7128,
+    "score_breakdown": {
+      "high_imp": 1.0,
+      "ctr_below_expected": 0.505,
+      "position_decline": 0.106,
+      "kw_breadth": 1.0
+    }
+  },
+  {
+    "post_id": 476,
+    "url": "https://mri-tmg.jp/consulting-career-change-liberal-arts-no-experience/",
+    "title": "文系・未経験からコンサル転職は可能？強みの活かし方と成功ロードマップを徹底解説",
+    "pos_90d": 7.590361445783133,
+    "pos_30d": 7.590361445783133,
+    "delta_pos": 0.0,
+    "imp_90d": 83,
+    "imp_30d": 83,
+    "ctr_90d": 0.0,
+    "expected_ctr": 0.025,
+    "ctr_ratio": 0.0,
+    "n_kws_imp10": 1,
+    "days_since_modified": 1,
+    "days_since_rewrite": null,
+    "primary_queries": [
+      "コンサル 文系",
+      "文系 コンサル",
+      "コンサル文系"
+    ],
+    "categories": [
+      10
+    ],
+    "score": 0.4191,
+    "score_breakdown": {
+      "high_imp": 0.042,
+      "ctr_below_expected": 1.0,
+      "position_decline": 0.0,
+      "kw_breadth": 0.033
+    }
+  },
+  {
+    "post_id": 479,
+    "url": "https://mri-tmg.jp/kpmg-consulting-job-change-2/",
+    "title": "KPMGコンサルティングへの転職ガイド｜中途採用の難易度・年収・選考フロー・面接対策を徹底解説【2026年最新】",
+    "pos_90d": 14.215034965034965,
+    "pos_30d": 14.215034965034965,
+    "delta_pos": 0.0,
+    "imp_90d": 572,
+    "imp_30d": 572,
+    "ctr_90d": 0.0034965034965034965,
+    "expected_ctr": 0.012,
+    "ctr_ratio": 0.2913752913752914,
+    "n_kws_imp10": 7,
+    "days_since_modified": 1,
+    "days_since_rewrite": null,
+    "primary_queries": [
+      "kpmgコンサルティング 転職",
+      "kpmg 転職",
+      "kpmgコンサルティング 難易度"
+    ],
+    "categories": [
+      6,
+      9
+    ],
+    "score": 0.4159,
+    "score_breakdown": {
+      "high_imp": 0.286,
+      "ctr_below_expected": 0.709,
+      "position_decline": 0.0,
+      "kw_breadth": 0.233
+    }
+  },
+  {
+    "post_id": 8,
+    "url": "https://mri-tmg.jp/pwc-severe/",
+    "title": "PwCコンサルティングはやばい？【2026年最新】年収・激務・評判の実態をBIG4比較・現役社員の声・公的データで徹底検証",
+    "pos_90d": 7.177121771217712,
+    "pos_30d": 8.661538461538461,
+    "delta_pos": 1.4844166903207485,
+    "imp_90d": 542,
+    "imp_30d": 65,
+    "ctr_90d": 0.012915129151291513,
+    "expected_ctr": 0.025,
+    "ctr_ratio": 0.5166051660516605,
+    "n_kws_imp10": 10,
+    "days_since_modified": 1,
+    "days_since_rewrite": null,
+    "primary_queries": [
+      "pwcコンサルティング 激務",
+      "pwcコンサルティング 評判",
+      "pwc やばい"
+    ],
+    "categories": [
+      6,
+      9
+    ],
+    "score": 0.2995,
+    "score_breakdown": {
+      "high_imp": 0.033,
+      "ctr_below_expected": 0.483,
+      "position_decline": 0.297,
+      "kw_breadth": 0.333
+    }
+  },
+  {
+    "post_id": 488,
+    "url": "https://mri-tmg.jp/abeam-consulting-avoid-warning-2/",
+    "title": "アビームコンサルティングは「やめとけ」と言われる7つの理由｜年収・離職率・激務の実態を現場データで検証",
+    "pos_90d": 8.057553956834532,
+    "pos_30d": 8.057553956834532,
+    "delta_pos": 0.0,
+    "imp_90d": 1390,
+    "imp_30d": 1390,
+    "ctr_90d": 0.03669064748201439,
+    "expected_ctr": 0.02,
+    "ctr_ratio": 1.8345323741007193,
+    "n_kws_imp10": 11,
+    "days_since_modified": 1,
+    "days_since_rewrite": null,
+    "primary_queries": [
+      "アビームコンサルティング やばい",
+      "アビームコンサルティング 激務",
+      "アビームコンサルティング 離職率"
+    ],
+    "categories": [
+      6,
+      9
+    ],
+    "score": 0.2818,
+    "score_breakdown": {
+      "high_imp": 0.695,
+      "ctr_below_expected": 0.0,
+      "position_decline": 0.0,
+      "kw_breadth": 0.367
+    }
+  },
+  {
+    "post_id": 151,
+    "url": "https://mri-tmg.jp/pwc-consulting-avoid-warning/",
+    "title": "PwCコンサルティングは「やめとけ」と言われる理由7選｜年収・激務・離職率の実態と後悔しない判断基準",
+    "pos_90d": 8.472527472527473,
+    "pos_30d": 8.472527472527473,
+    "delta_pos": 0.0,
+    "imp_90d": 91,
+    "imp_30d": 91,
+    "ctr_90d": 0.01098901098901099,
+    "expected_ctr": 0.02,
+    "ctr_ratio": 0.5494505494505495,
+    "n_kws_imp10": 2,
+    "days_since_modified": 1,
+    "days_since_rewrite": null,
+    "primary_queries": [
+      "pwcコンサルティング 離職率",
+      "pwc やばい",
+      "pwc 平均勤続年数"
+    ],
+    "categories": [
+      6,
+      9
+    ],
+    "score": 0.2072,
+    "score_breakdown": {
+      "high_imp": 0.045,
+      "ctr_below_expected": 0.451,
+      "position_decline": 0.0,
+      "kw_breadth": 0.067
+    }
+  },
+  {
+    "post_id": 428,
+    "url": "https://mri-tmg.jp/ey-strategy-negative-reputation",
+    "title": "EYストラテジーはやばい？評判・年収・激務の実態を口コミとデータで徹底検証【2026年最新】",
+    "pos_90d": 9.48936170212766,
+    "pos_30d": 9.48936170212766,
+    "delta_pos": 0.0,
+    "imp_90d": 94,
+    "imp_30d": 94,
+    "ctr_90d": 0.010638297872340425,
+    "expected_ctr": 0.018,
+    "ctr_ratio": 0.591016548463357,
+    "n_kws_imp10": 2,
+    "days_since_modified": 1,
+    "days_since_rewrite": null,
+    "primary_queries": [
+      "ey コンサルティング 激務",
+      "ey やめとけ",
+      "ey 評判"
+    ],
+    "categories": [
+      6,
+      9
+    ],
+    "score": 0.191,
+    "score_breakdown": {
+      "high_imp": 0.047,
+      "ctr_below_expected": 0.409,
+      "position_decline": 0.0,
+      "kw_breadth": 0.067
+    }
+  },
+  {
+    "post_id": 455,
+    "url": "https://mri-tmg.jp/abeam-consulting-turnover-rate/",
+    "title": "アビームコンサルティングの離職率は高い？公式データと業界比較で実態を徹底解説",
+    "pos_90d": 6.598870056497175,
+    "pos_30d": 6.598870056497175,
+    "delta_pos": 0.0,
+    "imp_90d": 531,
+    "imp_30d": 531,
+    "ctr_90d": 0.02824858757062147,
+    "expected_ctr": 0.03,
+    "ctr_ratio": 0.9416195856873824,
+    "n_kws_imp10": 5,
+    "days_since_modified": 1,
+    "days_since_rewrite": null,
+    "primary_queries": [
+      "アビームコンサルティング やばい",
+      "アビームコンサルティング 離職率",
+      "アビーム 大量退職"
+    ],
+    "categories": [
+      6
+    ],
+    "score": 0.1363,
+    "score_breakdown": {
+      "high_imp": 0.266,
+      "ctr_below_expected": 0.058,
+      "position_decline": 0.0,
+      "kw_breadth": 0.167
+    }
+  },
+  {
+    "post_id": 151,
+    "url": "https://mri-tmg.jp/pwc-consulting-avoid-warning",
+    "title": "PwCコンサルティングは「やめとけ」と言われる理由7選｜年収・激務・離職率の実態と後悔しない判断基準",
+    "pos_90d": 11.058823529411764,
+    "pos_30d": 11.058823529411764,
+    "delta_pos": 0.0,
+    "imp_90d": 85,
+    "imp_30d": 85,
+    "ctr_90d": 0.023529411764705882,
+    "expected_ctr": 0.012,
+    "ctr_ratio": 1.9607843137254901,
+    "n_kws_imp10": 2,
+    "days_since_modified": 1,
+    "days_since_rewrite": null,
+    "primary_queries": [
+      "pwc 転職 後悔",
+      "pwcコンサルティング 離職率",
+      "pwc やばい"
+    ],
+    "categories": [
+      6,
+      9
+    ],
+    "score": 0.0261,
+    "score_breakdown": {
+      "high_imp": 0.043,
+      "ctr_below_expected": 0.0,
+      "position_decline": 0.0,
+      "kw_breadth": 0.067
+    }
+  }
+]

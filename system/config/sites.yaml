@@ -12,7 +12,6 @@ sites:
     register_post_meta: true   # ssp_meta_title / ssp_meta_description が REST 露出済
     primary_categories: ["期間工", "リゾートバイト"]
     permalink_pattern: slug    # /{slug}/
-    rewrite_recency_basis: modified   # default
   mri-tmg:
     name: "Consul Compas (mri-tmg.jp)"
     domain: mri-tmg.jp
@@ -24,7 +23,7 @@ sites:
     register_post_meta: true
     primary_categories: ["ファーム研究", "年収・キャリア"]
     permalink_pattern: slug
-    rewrite_recency_basis: date   # spread_mri_dates.py で modified が改変されているため公開日(date)で判定
+    min_imp_30d_override: 50   # GSC 露出が薄いサイトのため imp 閾値を緩める
   morinotakumi:
     name: "ハコノリ (morinotakumi.com)"
     domain: morinotakumi.com
@@ -36,21 +35,22 @@ sites:
     register_post_meta: true    # ✅ 設置済 (2026-05-09 確認、ssp_meta_title/description が REST 露出)
     primary_categories: ["大成建設", "大林組", "鹿島建設"]
     permalink_pattern: post_id  # /{post_id}/
-    rewrite_recency_basis: modified   # default (spread_hakonori_dates.py 停止後は modified ベースで OK)
 
-# リライト共通基準 (extract_rewrite_targets.py 用)
+# リライト共通基準 (extract_rewrite_targets.py 用) — GSC ベースに刷新 (2026-05-11)
+# modified/date 由来の判定は廃止 (spread_*.py で汚染されているため信頼不可)
 rewrite_criteria:
+  min_imp_30d: 100              # サイト別に sites.{slug}.min_imp_30d_override で上書き可
+  pos_min: 6.0                  # 6位以下のみ対象 (上位は触らない)
+  pos_max: 20.0                 # 20位より下は新規執筆案件として除外
+  exclude_position_top: 3.0     # 安全弁: pos ≤ 3 は絶対対象外
   min_days_since_last_rewrite: 30
-  min_position: 6.0           # pos 6位以下のみ (上位は触らない)
-  min_imp_30d: 50
-  min_days_since_publish: 60
-  exclude_position_top: 3     # 安全弁: pos≤3 は絶対に対象から除外
 
+# スコア重み (合計 1.0)
 priority_weights:
-  oldest_modified: 0.4
-  position_decline: 0.3
-  ctr_below_expected: 0.2
-  high_imp: 0.1
+  high_imp: 0.30                # imp_30d / 2000 でクリップ
+  ctr_below_expected: 0.40      # CTR ギャップ — 改善 ROI 最大
+  position_decline: 0.10        # 90d→30d の順位悪化
+  kw_breadth: 0.20              # imp≥10 の query 数 / 30
 
 # モデル選択 (タスク別)
 # rewrite: コスト効率重視 → sonnet (1記事 ~$0.07)
